@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PessoaViewDlg" widgetVar="PessoaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewPessoaTitle}">
+            <h:form id="PessoaViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pessoaController.selected != null}">
+                        <h:outputText value="#{bundle.ViewPessoaLabel_id}"/>
+                        <h:outputText value="#{pessoaController.selected.id}" title="#{bundle.ViewPessoaTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewPessoaLabel_nome}"/>
+                        <h:outputText value="#{pessoaController.selected.nome}" title="#{bundle.ViewPessoaTitle_nome}"/>
+                        <h:outputText value="#{bundle.ViewPessoaLabel_dataNascimento}"/>
+                        <h:outputText value="#{pessoaController.selected.dataNascimento}" title="#{bundle.ViewPessoaTitle_dataNascimento}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewPessoaLabel_sexo}"/>
+                        <h:outputText value="#{pessoaController.selected.sexo}" title="#{bundle.ViewPessoaTitle_sexo}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="PessoaViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

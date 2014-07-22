@@ -16,15 +16,33 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.omnifaces</groupId>
+            <artifactId>omnifaces</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+        
+        <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>4.0</version>
         </dependency>
+        
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>6.0</version>
+            <groupId>org.jboss.spec</groupId>
+            <artifactId>jboss-javaee-all-6.0</artifactId>
+            <version>3.0.2.Final</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.2.6.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>4.3.6.Final</version>
         </dependency>
     </dependencies>
 

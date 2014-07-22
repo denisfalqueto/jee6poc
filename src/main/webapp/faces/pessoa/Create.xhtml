@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PessoaCreateDlg" widgetVar="PessoaCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreatePessoaTitle}">
+            <h:form id="PessoaCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pessoaController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreatePessoaLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{pessoaController.selected.id}" title="#{bundle.CreatePessoaTitle_id}" />
+                        <p:outputLabel value="#{bundle.CreatePessoaLabel_nome}" for="nome" />
+                        <p:inputText id="nome" value="#{pessoaController.selected.nome}" title="#{bundle.CreatePessoaTitle_nome}" />
+                        <p:outputLabel value="#{bundle.CreatePessoaLabel_dataNascimento}" for="dataNascimento" />
+                        <p:calendar id="dataNascimento" pattern="MM/dd/yyyy" value="#{pessoaController.selected.dataNascimento}" title="#{bundle.EditPessoaTitle_dataNascimento}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreatePessoaLabel_sexo}" for="sexo" />
+                        <p:inputText id="sexo" value="#{pessoaController.selected.sexo}" title="#{bundle.CreatePessoaTitle_sexo}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pessoaController.create}" value="#{bundle.Save}" update="display,:PessoaListForm:datalist,:growl" oncomplete="handleSubmit(args,'PessoaCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="PessoaCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
