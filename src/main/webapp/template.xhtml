@@ -19,8 +19,8 @@
             <p:layoutUnit position="north" size="65" header="#{bundle.AppName}">
                 <h:form id="menuForm">
                     <p:menubar>
-                        <p:menuitem value="início" url="/index" icon="ui-icon-home"/>
-                        <p:submenu label="Manutenção">
+                        <p:menuitem value="#{bundle.Home}" url="/index" icon="ui-icon-home"/>
+                        <p:submenu label="#{bundle.Maintenance}">
                             <p:menuitem value="Pessoa" url="/faces/pessoa/List.xhtml" />
                         </p:submenu>
                     </p:menubar>

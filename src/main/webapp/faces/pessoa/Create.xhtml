@@ -17,8 +17,9 @@
                         <p:outputLabel value="#{bundle.CreatePessoaLabel_nome}" for="nome" />
                         <p:inputText id="nome" value="#{pessoaController.selected.nome}" title="#{bundle.CreatePessoaTitle_nome}" />
                         <p:outputLabel value="#{bundle.CreatePessoaLabel_dataNascimento}" for="dataNascimento" />
-                        <p:calendar id="dataNascimento" pattern="MM/dd/yyyy" value="#{pessoaController.selected.dataNascimento}" title="#{bundle.EditPessoaTitle_dataNascimento}"  showOn="button"/>
+                        <p:calendar id="dataNascimento" pattern="MM/dd/yyyy" value="#{pessoaController.selected.dataNascimento}" title="#{bundle.EditPessoaTitle_dataNascimento}"  showOn="focus"/>
                         <p:outputLabel value="#{bundle.CreatePessoaLabel_sexo}" for="sexo" />
+                        <p:selectOneMenu id="sexo" value="#{pessoaController.selected.sexo}" 
                         <p:inputText id="sexo" value="#{pessoaController.selected.sexo}" title="#{bundle.CreatePessoaTitle_sexo}" />
                     </p:panelGrid>
                     <p:commandButton actionListener="#{pessoaController.create}" value="#{bundle.Save}" update="display,:PessoaListForm:datalist,:growl" oncomplete="handleSubmit(args,'PessoaCreateDialog');"/>
