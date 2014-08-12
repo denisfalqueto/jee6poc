@@ -2,10 +2,13 @@ package br.jus.trt3.poc.jee6.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 /**
@@ -16,8 +19,7 @@ import javax.persistence.Temporal;
 public class Pessoa implements Serializable {
 
     public enum Sexo {
-
-        Masculino, Feminino, NaoInformado
+        Masculino, Feminino, NaoInformado;
     }
 
     private static final long serialVersionUID = 1L;
@@ -28,6 +30,8 @@ public class Pessoa implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataNascimento;
     private Sexo sexo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa")
+    private Set<Telefone> telefones;
 
     public Long getId() {
         return id;
@@ -59,6 +63,14 @@ public class Pessoa implements Serializable {
 
     public void setSexo(Sexo sexo) {
         this.sexo = sexo;
+    }
+
+    public Set<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(Set<Telefone> telefones) {
+        this.telefones = telefones;
     }
 
     @Override

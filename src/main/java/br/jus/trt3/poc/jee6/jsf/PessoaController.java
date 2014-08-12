@@ -116,6 +116,10 @@ public class PessoaController implements Serializable {
     public List<Pessoa> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+    
+    public Pessoa.Sexo[] getSexos() {
+        return Pessoa.Sexo.values();
+    }
 
     @FacesConverter(forClass = Pessoa.class)
     public static class PessoaControllerConverter implements Converter {

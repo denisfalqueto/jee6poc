@@ -19,7 +19,9 @@
                         <p:outputLabel value="#{bundle.EditPessoaLabel_dataNascimento}" for="dataNascimento" />
                         <p:calendar id="dataNascimento" pattern="MM/dd/yyyy" value="#{pessoaController.selected.dataNascimento}" title="#{bundle.EditPessoaTitle_dataNascimento}"  showOn="button"/>
                         <p:outputLabel value="#{bundle.EditPessoaLabel_sexo}" for="sexo" />
-                        <p:inputText id="sexo" value="#{pessoaController.selected.sexo}" title="#{bundle.EditPessoaTitle_sexo}" />
+                        <p:selectOneMenu id="sexo" value="#{pessoaController.selected.sexo}" >
+                            <f:selectItems value="#{pessoaController.sexos}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{pessoaController.update}" value="#{bundle.Save}" update="display,:PessoaListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PessoaEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="PessoaEditDialog.hide()"/>

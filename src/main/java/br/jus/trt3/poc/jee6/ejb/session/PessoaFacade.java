@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class PessoaFacade extends AbstractFacade<Pessoa> {
-    @PersistenceContext(unitName = "br.jus.trt.bibliotecas_jee6poc_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "jee6poc")
     private EntityManager em;
 
     @Override
