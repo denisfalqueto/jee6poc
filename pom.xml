@@ -12,9 +12,156 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <deltaspike.version>1.0.1</deltaspike.version>
     </properties>
 
     <dependencies>
+        <!-- DeltaSpike - extensions for CDI -->
+        <dependency>
+            <groupId>org.apache.deltaspike.core</groupId>
+            <artifactId>deltaspike-core-api</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.deltaspike.core</groupId>
+            <artifactId>deltaspike-core-impl</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- Deltaspike Weld Module -->
+        <dependency>
+            <groupId>org.apache.deltaspike.cdictrl</groupId>
+            <artifactId>deltaspike-cdictrl-weld</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        
+        <!-- 
+            ! Deltaspike modules 
+            ! Cada módulo deve ser descomentado se necessário 
+        -->
+        <!-- Deltaspike Security Module
+            ! Para usar este módulo, é necessário ativar o interceptador
+            ! org.apache.deltaspike.security.impl.extension.SecurityInterceptor
+            ! no arquivo beans.xml
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-security-module-api</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-security-module-impl</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        -->
+        
+        <!-- Deltaspike JPA Module
+            ! Para usar este módulo, é necessário ativar o interceptador
+            ! org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor
+            ! no arquivo beans.xml
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-jpa-module-api</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-jpa-module-impl</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        -->
+        
+        <!-- Deltaspike JSF Module
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-jsf-module-api</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-jsf-module-impl-ee6</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        -->
+        
+        <!-- Deltaspike BeanValidation Module
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-bean-validation-module-impl</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        -->
+        
+        <!-- Deltaspike Data Module
+            ! Para usar este módulo, é necessário configurar uma alternativa
+            ! org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy
+            ! no arquivo beans.xml
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-data-module-api</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-data-module-impl</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        -->
+        
+        <!-- Deltaspike Test Control Module
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-test-control-module-api</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-test-control-module-impl</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        -->
+        
+        <!-- Deltaspike Scheduler Module
+            ! A implementação sugerida é do Quartz
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-scheduler-module-api</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-scheduler-module-impl</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+        -->
+        
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
@@ -33,6 +180,7 @@
             <version>3.0.2.Final</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
