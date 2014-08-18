@@ -6,10 +6,4 @@
     <interceptors>
         <class>org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor</class>
     </interceptors>
-    <!-- Necessário para o módulo Data Module do DeltaSpike -->
-    <!--
-    <alternatives>
-        <class>org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy</class>
-    </alternatives>
-    -->
 </beans>
