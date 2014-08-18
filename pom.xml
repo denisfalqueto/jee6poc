@@ -29,6 +29,7 @@
             <version>${deltaspike.version}</version>
             <scope>runtime</scope>
         </dependency>
+
         <!-- Deltaspike Weld Module -->
         <dependency>
             <groupId>org.apache.deltaspike.cdictrl</groupId>
@@ -41,10 +42,12 @@
             ! Deltaspike modules 
             ! Cada módulo deve ser descomentado se necessário 
         -->
+
         <!-- Deltaspike Security Module
             ! Para usar este módulo, é necessário ativar o interceptador
             ! org.apache.deltaspike.security.impl.extension.SecurityInterceptor
             ! no arquivo beans.xml
+        -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-security-module-api</artifactId>
@@ -58,12 +61,14 @@
             <version>${deltaspike.version}</version>
             <scope>runtime</scope>
         </dependency>
-        -->
         
         <!-- Deltaspike JPA Module
             ! Para usar este módulo, é necessário ativar o interceptador
             ! org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor
-            ! no arquivo beans.xml
+            ! no arquivo beans.xml.
+            ! Também é necessário implementar um producer que forneca instâncias
+            ! de EntityManager.
+        -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jpa-module-api</artifactId>
@@ -77,9 +82,8 @@
             <version>${deltaspike.version}</version>
             <scope>runtime</scope>
         </dependency>
-        -->
         
-        <!-- Deltaspike JSF Module
+        <!-- Deltaspike JSF Module -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jsf-module-api</artifactId>
@@ -93,21 +97,20 @@
             <version>${deltaspike.version}</version>
             <scope>runtime</scope>
         </dependency>
-        -->
         
-        <!-- Deltaspike BeanValidation Module
+        <!-- Deltaspike BeanValidation Module -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-bean-validation-module-impl</artifactId>
             <version>${deltaspike.version}</version>
             <scope>runtime</scope>
         </dependency>
-        -->
         
         <!-- Deltaspike Data Module
             ! Para usar este módulo, é necessário configurar uma alternativa
             ! org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy
             ! no arquivo beans.xml
+        -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-data-module-api</artifactId>
@@ -121,7 +124,6 @@
             <version>${deltaspike.version}</version>
             <scope>runtime</scope>
         </dependency>
-        -->
         
         <!-- Deltaspike Test Control Module
         <dependency>
@@ -141,6 +143,7 @@
         
         <!-- Deltaspike Scheduler Module
             ! A implementação sugerida é do Quartz
+        -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-scheduler-module-api</artifactId>
@@ -160,20 +163,25 @@
             <artifactId>quartz</artifactId>
             <version>2.2.1</version>
         </dependency>
-        -->
-        
+
+        <!-- Omnifaces - utilitários para simplifcar tarefas de JSF
+             ! Tem que ver se é realmente necessário, pois esas deficiências
+             ! podem ter sido resolvidas em versões mais novas do JSF
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
             <version>1.8.1</version>
         </dependency>
-        
+        -->
+
+        <!-- Primafaces - Conjunto de componentes JSF -->        
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>4.0</version>
         </dependency>
-        
+
+        <!-- Dependência para a implementação JEE6 do JBoss -->        
         <dependency>
             <groupId>org.jboss.spec</groupId>
             <artifactId>jboss-javaee-all-6.0</artifactId>
@@ -181,6 +189,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Implementação JPA com Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
