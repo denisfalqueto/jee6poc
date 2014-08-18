@@ -1,23 +1,29 @@
 package br.jus.trt3.poc.jee6.entity;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 
 /**
  * Producer de Entitymanager, necessário para o módulo Data do DeltaSpike.
  *
  * @author denisf
  */
+@ApplicationScoped
 public class EntityManagerProducer {
-
-    @PersistenceContext(unitName = "jee6poc")
-    private EntityManagerFactory emf;
     
+    @PersistenceUnit
+    private EntityManagerFactory emf;
+
     @Produces
-    private EntityManager produces() {
+    @Default
+    @RequestScoped
+    public EntityManager produces() {
         return emf.createEntityManager();
     }
 

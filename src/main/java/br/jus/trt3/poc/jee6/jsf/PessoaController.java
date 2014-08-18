@@ -3,14 +3,13 @@ package br.jus.trt3.poc.jee6.jsf;
 import br.jus.trt3.poc.jee6.entity.Pessoa;
 import br.jus.trt3.poc.jee6.jsf.util.JsfUtil;
 import br.jus.trt3.poc.jee6.jsf.util.JsfUtil.PersistAction;
-import br.jus.trt3.poc.jee6.ejb.session.PessoaFacade;
+import br.jus.trt3.poc.jee6.repository.PessoaRepository;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -18,13 +17,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 @ManagedBean(name = "pessoaController")
 @SessionScoped
 public class PessoaController implements Serializable {
 
-    @EJB
-    private br.jus.trt3.poc.jee6.ejb.session.PessoaFacade ejbFacade;
+    @Inject
+    private PessoaRepository pessoaRepository;
     private List<Pessoa> items = null;
     private Pessoa selected;
 
@@ -39,19 +39,12 @@ public class PessoaController implements Serializable {
         this.selected = selected;
     }
 
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
-    }
-
-    private PessoaFacade getFacade() {
-        return ejbFacade;
+    private PessoaRepository getRepository() {
+        return pessoaRepository;
     }
 
     public Pessoa prepareCreate() {
         selected = new Pessoa();
-        initializeEmbeddableKey();
         return selected;
     }
 
@@ -76,19 +69,18 @@ public class PessoaController implements Serializable {
 
     public List<Pessoa> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            items = getRepository().findAll();
         }
         return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
-            setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                    getRepository().save(selected);
                 } else {
-                    getFacade().remove(selected);
+                    getRepository().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
@@ -110,11 +102,11 @@ public class PessoaController implements Serializable {
     }
 
     public List<Pessoa> getItemsAvailableSelectMany() {
-        return getFacade().findAll();
+        return getRepository().findAll();
     }
 
     public List<Pessoa> getItemsAvailableSelectOne() {
-        return getFacade().findAll();
+        return getRepository().findAll();
     }
     
     public Pessoa.Sexo[] getSexos() {
@@ -131,7 +123,7 @@ public class PessoaController implements Serializable {
             }
             PessoaController controller = (PessoaController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "pessoaController");
-            return controller.getFacade().find(getKey(value));
+            return controller.getRepository().findBy(getKey(value));
         }
 
         java.lang.Long getKey(String value) {
