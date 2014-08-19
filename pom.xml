@@ -13,8 +13,10 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <deltaspike.version>1.0.1</deltaspike.version>
+        
+        <ambiente>Development</ambiente>
     </properties>
-
+    
     <dependencies>
         <!-- DeltaSpike - extensions for CDI -->
         <dependency>
@@ -223,6 +225,16 @@
                 <version>2.1.1</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <filtering>true</filtering>
+                            <!-- Excluir os facelets do filtro -->
+                            <excludes>
+                                <exclude>**/*.xhtml</exclude>
+                            </excludes>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
             <plugin>
