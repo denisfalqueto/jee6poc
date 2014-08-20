@@ -32,14 +32,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Deltaspike Weld Module -->
-        <dependency>
-            <groupId>org.apache.deltaspike.cdictrl</groupId>
-            <artifactId>deltaspike-cdictrl-weld</artifactId>
-            <version>${deltaspike.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        
         <!-- 
             ! Deltaspike modules 
             ! Cada módulo deve ser descomentado se necessário 
