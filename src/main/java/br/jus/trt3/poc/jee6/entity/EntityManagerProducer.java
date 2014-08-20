@@ -1,8 +1,5 @@
 package br.jus.trt3.poc.jee6.entity;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
@@ -14,15 +11,12 @@ import javax.persistence.PersistenceUnit;
  *
  * @author denisf
  */
-@ApplicationScoped
 public class EntityManagerProducer {
     
     @PersistenceUnit
     private EntityManagerFactory emf;
 
     @Produces
-    @Default
-    @RequestScoped
     public EntityManager produces() {
         return emf.createEntityManager();
     }
