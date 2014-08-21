@@ -2,6 +2,7 @@ package br.jus.trt3.poc.jee6.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class Pessoa implements Serializable {
     private Date dataNascimento;
     private Sexo sexo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa")
-    private Set<Telefone> telefones;
+    private Set<Telefone> telefones = new HashSet<Telefone>();
 
     public Long getId() {
         return id;
