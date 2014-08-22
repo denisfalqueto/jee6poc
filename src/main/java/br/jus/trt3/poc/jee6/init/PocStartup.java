@@ -74,6 +74,7 @@ public class PocStartup {
                         sbNumero.append(r.nextInt(10));
                     }
                     tel.setNumero(sbNumero.toString());
+                    pessoa.getTelefones().add(tel);
                 }
 
                 pessoaRepository.save(pessoa);

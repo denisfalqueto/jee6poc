@@ -1,8 +1,9 @@
 package br.jus.trt3.poc.jee6.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,7 +33,7 @@ public class Pessoa implements Serializable {
     private Date dataNascimento;
     private Sexo sexo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa")
-    private Set<Telefone> telefones = new HashSet<Telefone>();
+    private List<Telefone> telefones = new ArrayList<Telefone>();
 
     public Long getId() {
         return id;
@@ -66,11 +67,11 @@ public class Pessoa implements Serializable {
         this.sexo = sexo;
     }
 
-    public Set<Telefone> getTelefones() {
+    public List<Telefone> getTelefones() {
         return telefones;
     }
 
-    public void setTelefones(Set<Telefone> telefones) {
+    public void setTelefones(List<Telefone> telefones) {
         this.telefones = telefones;
     }
 

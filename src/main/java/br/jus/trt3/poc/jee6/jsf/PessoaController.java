@@ -1,6 +1,7 @@
 package br.jus.trt3.poc.jee6.jsf;
 
 import br.jus.trt3.poc.jee6.entity.Pessoa;
+import br.jus.trt3.poc.jee6.entity.Telefone;
 import br.jus.trt3.poc.jee6.jsf.util.JsfUtil;
 import br.jus.trt3.poc.jee6.jsf.util.JsfUtil.PersistAction;
 import br.jus.trt3.poc.jee6.repository.PessoaRepository;
@@ -8,6 +9,7 @@ import br.jus.trt3.poc.jee6.repository.PessoaRepository;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJBException;
@@ -18,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "pessoaController")
 @SessionScoped
@@ -27,6 +30,8 @@ public class PessoaController implements Serializable {
     private PessoaRepository pessoaRepository;
     private List<Pessoa> items = null;
     private Pessoa selected;
+    private List<Telefone> telefones = null;
+    private Telefone telefoneSelected;
 
     public PessoaController() {
     }
@@ -37,6 +42,22 @@ public class PessoaController implements Serializable {
 
     public void setSelected(Pessoa selected) {
         this.selected = selected;
+    }
+
+    public List<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(List<Telefone> telefones) {
+        this.telefones = telefones;
+    }
+
+    public Telefone getTelefoneSelected() {
+        return telefoneSelected;
+    }
+
+    public void setTelefoneSelected(Telefone telefoneSelected) {
+        this.telefoneSelected = telefoneSelected;
     }
 
     private PessoaRepository getRepository() {
@@ -108,9 +129,13 @@ public class PessoaController implements Serializable {
     public List<Pessoa> getItemsAvailableSelectOne() {
         return getRepository().findAll();
     }
-    
+
     public Pessoa.Sexo[] getSexos() {
         return Pessoa.Sexo.values();
+    }
+
+    public void onPessoaSelected(SelectEvent evt) {
+        setTelefones(getSelected().getTelefones());
     }
 
     @FacesConverter(forClass = Pessoa.class)
