@@ -30,7 +30,7 @@ public class PessoaController implements Serializable {
     private PessoaRepository pessoaRepository;
     private List<Pessoa> items = null;
     private Pessoa selected;
-    private List<Telefone> telefones = null;
+    private Set<Telefone> telefones = null;
     private Telefone telefoneSelected;
 
     public PessoaController() {
@@ -44,11 +44,11 @@ public class PessoaController implements Serializable {
         this.selected = selected;
     }
 
-    public List<Telefone> getTelefones() {
+    public Set<Telefone> getTelefones() {
         return telefones;
     }
 
-    public void setTelefones(List<Telefone> telefones) {
+    public void setTelefones(Set<Telefone> telefones) {
         this.telefones = telefones;
     }
 

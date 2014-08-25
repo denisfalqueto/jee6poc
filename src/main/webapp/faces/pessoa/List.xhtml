@@ -65,7 +65,7 @@
                 </p:panel>
                     
                 <p:panel id="pnlTelefones">
-                    <p:dataTable id="datalistTelefones" value="#{pessoaController.telefones}" var="tel"
+                    <p:dataTable id="datalistTelefones" value="#{pessoaController.telefones.toArray()}" var="tel"
                                  paginator="true"
                                  rows="10"
                                  rowsPerPageTemplate="10,20,30,40,50"
