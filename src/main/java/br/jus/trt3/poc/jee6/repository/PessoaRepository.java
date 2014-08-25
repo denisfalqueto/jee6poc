@@ -1,7 +1,7 @@
 package br.jus.trt3.poc.jee6.repository;
 
 import br.jus.trt3.poc.jee6.entity.Pessoa;
-import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.data.api.AbstractEntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 
 /**
@@ -9,5 +9,5 @@ import org.apache.deltaspike.data.api.Repository;
  * @author denisf
  */
 @Repository(forEntity = Pessoa.class)
-public interface PessoaRepository extends EntityRepository<Pessoa, Long> {
+public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, Long> {
 }
