@@ -15,7 +15,16 @@
 
         <ui:define name="body">
             <h:form id="PessoaListForm">
-                <p:panel header="#{bundle.ListPessoaTitle}">
+                <p:panel header="#{bundle.ListPessoaFiltro}" id="pnlFiltroTelefone">
+                    <p:panelGrid columns="2">
+                        <h:outputText value="#{bundle.ListPessoaFiltroTelefone}"/>
+                        <p:inputText id="filtroTelefone" value="#{pessoaController.filtroTelefone}" title="#{bundle.ListPessoaFiltroTelefone}">
+                            <p:ajax event="keyup" listener="#{pessoaController.onFiltroKeyUp}" update=":PessoaListForm:pnlPessoas"/>
+                        </p:inputText>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel id="pnlPessoas" header="#{bundle.ListPessoaTitle}">
                     <p:dataTable id="datalist" value="#{pessoaController.items}" var="item"
                                  selectionMode="single" selection="#{pessoaController.selected}"
                                  paginator="true"
@@ -63,7 +72,7 @@
                         </f:facet>
                     </p:dataTable>
                 </p:panel>
-                    
+
                 <p:panel id="pnlTelefones">
                     <p:dataTable id="datalistTelefones" value="#{pessoaController.telefones.toArray()}" var="tel"
                                  paginator="true"

@@ -30,6 +30,7 @@ public class PessoaController implements Serializable {
     private PessoaRepository pessoaRepository;
     private List<Pessoa> items = null;
     private Pessoa selected;
+    private String filtroTelefone;
     private Set<Telefone> telefones = null;
     private Telefone telefoneSelected;
 
@@ -58,6 +59,14 @@ public class PessoaController implements Serializable {
 
     public void setTelefoneSelected(Telefone telefoneSelected) {
         this.telefoneSelected = telefoneSelected;
+    }
+
+    public String getFiltroTelefone() {
+        return filtroTelefone;
+    }
+
+    public void setFiltroTelefone(String filtroTelefone) {
+        this.filtroTelefone = filtroTelefone;
     }
 
     private PessoaRepository getRepository() {
@@ -90,7 +99,11 @@ public class PessoaController implements Serializable {
 
     public List<Pessoa> getItems() {
         if (items == null) {
-            items = getRepository().findAll();
+            if (filtroTelefone != null && !filtroTelefone.trim().isEmpty()) {
+                items = getRepository().findByNumeroTelefone(filtroTelefone.trim() + "%");
+            } else {
+                items = getRepository().findAll();
+            }
         }
         return items;
     }
@@ -136,6 +149,10 @@ public class PessoaController implements Serializable {
 
     public void onPessoaSelected(SelectEvent evt) {
         setTelefones(getSelected().getTelefones());
+    }
+
+    public void onFiltroKeyUp() {
+        this.items = null;
     }
 
     @FacesConverter(forClass = Pessoa.class)
