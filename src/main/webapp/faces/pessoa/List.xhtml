@@ -52,8 +52,8 @@
 
                         <p:ajax event="rowSelect" listener="#{pessoaController.onPessoaSelected}"
                                 update="createButton,viewButton,editButton,deleteButton,:PessoaListForm:pnlTelefones"/>
-                        <p:ajax event="rowUnselect" 
-                                update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" listener="#{pessoaController.onPessoaSelected}"
+                                update="createButton viewButton editButton deleteButton,:PessoaListForm:pnlTelefones"/>
 
                         <p:column>
                             <f:facet name="header">

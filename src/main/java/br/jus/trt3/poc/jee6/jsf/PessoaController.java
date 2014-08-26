@@ -152,8 +152,12 @@ public class PessoaController implements Serializable {
         return Pessoa.Sexo.values();
     }
 
-    public void onPessoaSelected(SelectEvent evt) {
-        setTelefones(getSelected().getTelefones());
+    public void onPessoaSelected() {
+        Set<Telefone> tels = null;
+        if (getSelected() != null) {
+            tels = getSelected().getTelefones();
+        }
+        setTelefones(tels);
     }
 
     public void onFiltroKeyUp() {
