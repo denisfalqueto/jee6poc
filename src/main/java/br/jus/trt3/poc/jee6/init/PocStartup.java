@@ -5,7 +5,8 @@ import br.jus.trt3.poc.jee6.entity.Telefone;
 import br.jus.trt3.poc.jee6.entity.TipoTelefone;
 import br.jus.trt3.poc.jee6.repository.PessoaRepository;
 import br.jus.trt3.poc.jee6.repository.TipoTelefoneRepository;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -55,14 +56,51 @@ public class PocStartup {
                 comercial, residencial, celular
             };
 
+            // Alguns nomes comuns
+            String[] nomesPropriosMasc = new String[]{"Lucas", "Enzo", "Guilherme", "Gabriel",
+                "Gustavo", "João", "Arthur", "Mateus", "Rafael", "Adão", "Eduardo", "Bruno"};
+            String[] nomesPropriosFem = new String[]{"Isabela", "Sofia", "Maria", "Ana", "Julia",
+                "Beatriz", "Laura", "Camila", "Amanda", "Leticia", "Manuela", "Luana", "Bruna"};
+            String[] sobrenomes = new String[]{"Araral", "Barra", "Campos", "Cardoso", "Dias", "Gonzaga",
+                "Meier", "Melo", "Silva", "Silveira", "da Silva", "Fernandes", "Fraga", "Fonseca"};
+
             // Criar pessoas aleatoriamente
             Random r = new Random();
+            Calendar hoje = new GregorianCalendar();
+            
             int maxPessoas = r.nextInt(200);
             for (int i = 0; i < maxPessoas; i++) {
                 Pessoa pessoa = new Pessoa();
-                pessoa.setNome(String.format("Nome %d", i + 1));
                 pessoa.setSexo(r.nextBoolean() ? Pessoa.Sexo.Masculino : Pessoa.Sexo.Feminino);
-                pessoa.setDataNascimento(new Date());
+
+                // Definir um nome aleatoriamente
+                StringBuilder nome = new StringBuilder();
+                if (pessoa.getSexo().equals(Pessoa.Sexo.Masculino)) {
+                    nome.append(nomesPropriosMasc[r.nextInt(nomesPropriosMasc.length)]);
+                    // Uma chance em 10 de ter um nome composto :)
+                    if (r.nextInt(10) == 0) {
+                        nome.append(" ").append(nomesPropriosMasc[r.nextInt(nomesPropriosMasc.length)]);
+                    }
+                } else {
+                    nome.append(nomesPropriosFem[r.nextInt(nomesPropriosFem.length)]);
+                    // Uma chance em 10 de ter um nome composto :)
+                    if (r.nextInt(10) == 0) {
+                        nome.append(" ").append(nomesPropriosFem[r.nextInt(nomesPropriosFem.length)]);
+                    }
+                }
+                // Sobrenome
+                nome.append(" ").append(sobrenomes[r.nextInt(sobrenomes.length)]);
+                
+                // Até 80% de chances de ter um segundo sobrenome
+                if (r.nextInt(10) < 8) {
+                    nome.append(" ").append(sobrenomes[r.nextInt(sobrenomes.length)]);
+                }
+                pessoa.setNome(nome.toString());
+                
+                // Gerar uma data de aniversário aleatória, com até 90 anos de idade.
+                Calendar aniv = (Calendar) hoje.clone();
+                aniv.add(Calendar.DATE, -1 * r.nextInt(365 * 90));
+                pessoa.setDataNascimento(aniv.getTime());
 
                 int maxTelefones = r.nextInt(10);
                 for (int j = 0; j < maxTelefones; j++) {
