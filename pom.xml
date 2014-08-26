@@ -179,6 +179,11 @@
             <artifactId>primefaces-extensions</artifactId>
             <version>2.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.primefaces.themes</groupId>
+            <artifactId>all-themes</artifactId>
+            <version>1.0.10</version>
+        </dependency>
         
         <!-- Dependência para a implementação JEE6 do JBoss -->        
         <dependency>
