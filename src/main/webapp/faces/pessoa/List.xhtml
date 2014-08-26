@@ -16,11 +16,28 @@
         <ui:define name="body">
             <h:form id="PessoaListForm">
                 <p:panel header="#{bundle.ListPessoaFiltro}" id="pnlFiltroTelefone">
-                    <p:panelGrid columns="2">
-                        <h:outputText value="#{bundle.ListPessoaFiltroTelefone}"/>
-                        <p:inputText id="filtroTelefone" value="#{pessoaController.filtroTelefone}" title="#{bundle.ListPessoaFiltroTelefone}">
-                            <p:ajax event="keyup" listener="#{pessoaController.onFiltroKeyUp}" update=":PessoaListForm:pnlPessoas"/>
-                        </p:inputText>
+                    <p:panelGrid columns="4">
+                        <p:row>
+                            <p:column>
+                                <!-- Filtro para nome -->
+                                <h:outputText value="#{bundle.ListPessoaFiltroNome}"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="filtroNome" value="#{pessoaController.filtroNome}" title="#{bundle.ListPessoaFiltroNome}">
+                                    <p:ajax event="keyup" listener="#{pessoaController.onFiltroKeyUp}" update=":PessoaListForm:pnlPessoas"/>
+                                </p:inputText>
+                            </p:column>
+
+                            <p:column>
+                                <!-- Filtro para Telefone -->
+                                <h:outputText value="#{bundle.ListPessoaFiltroTelefone}"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="filtroTelefone" value="#{pessoaController.filtroTelefone}" title="#{bundle.ListPessoaFiltroTelefone}">
+                                    <p:ajax event="keyup" listener="#{pessoaController.onFiltroKeyUp}" update=":PessoaListForm:pnlPessoas"/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
                 </p:panel>
 

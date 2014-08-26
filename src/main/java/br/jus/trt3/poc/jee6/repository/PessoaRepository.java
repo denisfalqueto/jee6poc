@@ -2,8 +2,8 @@ package br.jus.trt3.poc.jee6.repository;
 
 import br.jus.trt3.poc.jee6.entity.Pessoa;
 import java.util.List;
-import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Query;
+import javax.persistence.TypedQuery;
+import org.apache.deltaspike.data.api.AbstractEntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 
 /**
@@ -12,14 +12,36 @@ import org.apache.deltaspike.data.api.Repository;
  * @author denisf
  */
 @Repository(forEntity = Pessoa.class)
-public interface PessoaRepository extends EntityRepository<Pessoa, Long> {
+public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, Long> {
 
-    @Query("from Pessoa p "
-            + "where exists ( "
-            + "  select 1 "
-            + "  from Telefone t "
-            + "  where t.pessoa = p "
-            + "    and t.numero like ?1"
-            + ")")
-    public List<Pessoa> findByNumeroTelefone(String numero);
+    public List<Pessoa> findByNomeETelefone(String nome, String numero) {
+        StringBuilder strQuery = new StringBuilder();
+        String conector = " where ";
+        strQuery.append("from Pessoa p");
+
+        if (nome != null && !nome.trim().isEmpty()) {
+            strQuery.append(conector).append("lower(p.nome) like lower(:nome)");
+            conector = " and ";
+        }
+        
+        if (numero != null && !numero.isEmpty()) {
+            strQuery.append(conector).append("exists ( "
+                    + "select 1 " 
+                    + "  from Telefone t " 
+                    + "  where t.pessoa = p " 
+                    + "    and t.numero like :numero) ");
+            conector = " and ";
+        }
+
+        TypedQuery<Pessoa> query = typedQuery(strQuery.toString());
+
+        if (nome != null && !nome.trim().isEmpty()) {
+            query.setParameter("nome", "%" + nome + "%");
+        }
+        if (numero != null && !numero.trim().isEmpty()) {
+            query.setParameter("numero", numero + "%");
+        }
+
+        return query.getResultList();
+    }
 }

@@ -30,6 +30,7 @@ public class PessoaController implements Serializable {
     private PessoaRepository pessoaRepository;
     private List<Pessoa> items = null;
     private Pessoa selected;
+    private String filtroNome;
     private String filtroTelefone;
     private Set<Telefone> telefones = null;
     private Telefone telefoneSelected;
@@ -59,6 +60,14 @@ public class PessoaController implements Serializable {
 
     public void setTelefoneSelected(Telefone telefoneSelected) {
         this.telefoneSelected = telefoneSelected;
+    }
+
+    public String getFiltroNome() {
+        return filtroNome;
+    }
+
+    public void setFiltroNome(String filtroNome) {
+        this.filtroNome = filtroNome;
     }
 
     public String getFiltroTelefone() {
@@ -99,11 +108,7 @@ public class PessoaController implements Serializable {
 
     public List<Pessoa> getItems() {
         if (items == null) {
-            if (filtroTelefone != null && !filtroTelefone.trim().isEmpty()) {
-                items = getRepository().findByNumeroTelefone(filtroTelefone.trim() + "%");
-            } else {
-                items = getRepository().findAll();
-            }
+            items = getRepository().findByNomeETelefone(filtroNome, filtroTelefone);
         }
         return items;
     }
