@@ -60,6 +60,12 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPessoaTitle_idade}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idade}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPessoaTitle_sexo}"/>
                             </f:facet>
                             <h:outputText value="#{item.sexo}"/>
