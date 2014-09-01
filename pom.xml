@@ -205,6 +205,13 @@
             <artifactId>hibernate-jpamodelgen</artifactId>
             <version>4.3.6.Final</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>3.1.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

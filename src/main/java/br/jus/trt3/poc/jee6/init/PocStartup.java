@@ -13,6 +13,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.projectstage.ProjectStage;
+import org.jboss.logging.Logger;
 
 /**
  * Uma instância deste objeto deverá existir apenas para executar um método no
@@ -24,6 +25,9 @@ import org.apache.deltaspike.core.api.projectstage.ProjectStage;
 @Singleton
 @Startup
 public class PocStartup {
+    
+    @Inject
+    private Logger log;
 
     @Inject
     private ProjectStage projectStage;
@@ -36,21 +40,26 @@ public class PocStartup {
 
     @PostConstruct
     public void execute() {
+        log.trace("Entrou em execute");
         // Se estivermos em desenvolvimento...
         if (ProjectStage.Development.equals(projectStage)) {
+            log.debug("Está em desenvolvimento");
 
             // Criar tipos de telefones
             TipoTelefone comercial = new TipoTelefone();
             comercial.setDescricao("Comercial");
             tipoTelefoneRepository.save(comercial);
+            log.debug("Gravou tipo de telefone comercial");
 
             TipoTelefone residencial = new TipoTelefone();
             residencial.setDescricao("Residencial");
             tipoTelefoneRepository.save(residencial);
+            log.debug("Gravou tipo de telefone residencial");
 
             TipoTelefone celular = new TipoTelefone();
             celular.setDescricao("Celular");
             tipoTelefoneRepository.save(celular);
+            log.debug("Gravou tipo de telefone celular");
 
             TipoTelefone[] tipos = new TipoTelefone[]{
                 comercial, residencial, celular
@@ -69,6 +78,7 @@ public class PocStartup {
             Calendar hoje = new GregorianCalendar();
             
             int maxPessoas = r.nextInt(200);
+            log.tracef("maxPessoas = %d", maxPessoas);
             for (int i = 0; i < maxPessoas; i++) {
                 Pessoa pessoa = new Pessoa();
                 pessoa.setSexo(r.nextBoolean() ? Pessoa.Sexo.Masculino : Pessoa.Sexo.Feminino);
@@ -103,6 +113,7 @@ public class PocStartup {
                 pessoa.setDataNascimento(aniv.getTime());
 
                 int maxTelefones = r.nextInt(10);
+                log.tracef("maxTelefones = %d", maxTelefones);
                 for (int j = 0; j < maxTelefones; j++) {
                     Telefone tel = new Telefone();
                     tel.setPessoa(pessoa);
@@ -116,6 +127,7 @@ public class PocStartup {
                 }
 
                 pessoaRepository.save(pessoa);
+                log.debugf("Gravou pessoa %s", pessoa.getNome());
             }
         }
     }
