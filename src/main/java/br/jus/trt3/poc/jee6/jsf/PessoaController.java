@@ -10,8 +10,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -20,7 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import org.primefaces.event.SelectEvent;
+import org.jboss.logging.Logger;
 
 @ManagedBean(name = "pessoaController")
 @SessionScoped
@@ -28,6 +26,8 @@ public class PessoaController implements Serializable {
 
     @Inject
     private PessoaRepository pessoaRepository;
+    @Inject
+    private static Logger log;
     private List<Pessoa> items = null;
     private Pessoa selected;
     private String filtroNome;
@@ -134,7 +134,7 @@ public class PessoaController implements Serializable {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
             } catch (Exception ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                log.error(null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
@@ -198,7 +198,8 @@ public class PessoaController implements Serializable {
                 Pessoa o = (Pessoa) object;
                 return getStringKey(o.getId());
             } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Pessoa.class.getName()});
+                log.errorv("object {0} is of type {1}; expected type: {2}", object, 
+                        object.getClass().getName(), Pessoa.class.getName());
                 return null;
             }
         }

@@ -2,9 +2,11 @@ package br.jus.trt3.poc.jee6.repository;
 
 import br.jus.trt3.poc.jee6.entity.Pessoa;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 import org.apache.deltaspike.data.api.AbstractEntityRepository;
 import org.apache.deltaspike.data.api.Repository;
+import org.jboss.logging.Logger;
 
 /**
  * Define um repositório de objetos Pessoa
@@ -13,8 +15,16 @@ import org.apache.deltaspike.data.api.Repository;
  */
 @Repository(forEntity = Pessoa.class)
 public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, Long> {
+    
+    @Inject
+    private Logger log;
 
     public List<Pessoa> findByNomeETelefone(String nome, String numero) {
+        log.trace("entrou em findBynomeETelefone");
+        log.tracef("nome = %s", nome);
+        log.tracef("numero = %s", numero);
+        
+        log.debug("Construindo a consulta");
         StringBuilder strQuery = new StringBuilder();
         String conector = " where ";
         strQuery.append("from Pessoa p");
@@ -33,8 +43,10 @@ public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, 
             conector = " and ";
         }
 
+        log.debug("Criar a typedQuery");
         TypedQuery<Pessoa> query = typedQuery(strQuery.toString());
 
+        log.debug("Passar os parãmetros");
         if (nome != null && !nome.trim().isEmpty()) {
             query.setParameter("nome", "%" + nome + "%");
         }
@@ -42,6 +54,7 @@ public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, 
             query.setParameter("numero", numero + "%");
         }
 
+        log.debug("Executar a consulta");
         return query.getResultList();
     }
 }
