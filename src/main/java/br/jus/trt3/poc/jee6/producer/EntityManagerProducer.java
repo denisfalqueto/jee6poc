@@ -1,4 +1,4 @@
-package br.jus.trt3.poc.jee6.entity;
+package br.jus.trt3.poc.jee6.producer;
 
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
