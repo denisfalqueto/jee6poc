@@ -1,7 +1,10 @@
 package br.jus.trt3.poc.jee6.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 /**
  *
@@ -31,7 +35,7 @@ public class Pessoa implements Serializable {
     private Date dataNascimento;
     private Sexo sexo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa")
-    private Set<Telefone> telefones;
+    private Set<Telefone> telefones = new HashSet<Telefone>();
 
     public Long getId() {
         return id;
@@ -71,6 +75,35 @@ public class Pessoa implements Serializable {
 
     public void setTelefones(Set<Telefone> telefones) {
         this.telefones = telefones;
+    }
+    
+    @Transient
+    public int getIdade() {
+        return getIdadeEm(Calendar.getInstance());
+    }
+    
+    @Transient
+    public int getIdadeEm(Date data) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data);
+        return getIdadeEm(cal);
+    }
+    
+    @Transient
+    public int getIdadeEm(Calendar data) {
+        Calendar calAniv = new GregorianCalendar();
+        calAniv.setTime(dataNascimento);
+        if (data.after(calAniv)) {
+            int idade = data.get(Calendar.YEAR) - calAniv.get(Calendar.YEAR);
+            if (data.get(Calendar.MONTH) < calAniv.get(Calendar.MONTH)) {
+                idade--;
+            } else if ((data.get(Calendar.MONTH) == calAniv.get(Calendar.MONTH)) &&
+                    (data.get(Calendar.DAY_OF_MONTH) < calAniv.get(Calendar.DAY_OF_MONTH))) {
+                idade--;
+            }
+            return idade;
+        }
+        return -1;
     }
 
     @Override
