@@ -70,7 +70,7 @@ public class PocStartup {
                 "Gustavo", "João", "Arthur", "Mateus", "Rafael", "Adão", "Eduardo", "Bruno"};
             String[] nomesPropriosFem = new String[]{"Isabela", "Sofia", "Maria", "Ana", "Julia",
                 "Beatriz", "Laura", "Camila", "Amanda", "Leticia", "Manuela", "Luana", "Bruna"};
-            String[] sobrenomes = new String[]{"Araral", "Barra", "Campos", "Cardoso", "Dias", "Gonzaga",
+            String[] sobrenomes = new String[]{"Amaral", "Barra", "Campos", "Cardoso", "Dias", "Gonzaga",
                 "Meier", "Melo", "Silva", "Silveira", "da Silva", "Fernandes", "Fraga", "Fonseca"};
 
             // Criar pessoas aleatoriamente
