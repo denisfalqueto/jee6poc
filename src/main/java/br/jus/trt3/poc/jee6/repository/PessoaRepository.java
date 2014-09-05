@@ -1,11 +1,15 @@
 package br.jus.trt3.poc.jee6.repository;
 
 import br.jus.trt3.poc.jee6.entity.Pessoa;
+import br.jus.trt3.poc.jee6.entity.Pessoa_;
+import br.jus.trt3.poc.jee6.entity.Telefone;
+import br.jus.trt3.poc.jee6.entity.Telefone_;
 import java.util.List;
 import javax.inject.Inject;
-import javax.persistence.TypedQuery;
 import org.apache.deltaspike.data.api.AbstractEntityRepository;
 import org.apache.deltaspike.data.api.Repository;
+import org.apache.deltaspike.data.api.criteria.Criteria;
+import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 import org.jboss.logging.Logger;
 
 /**
@@ -14,47 +18,30 @@ import org.jboss.logging.Logger;
  * @author denisf
  */
 @Repository(forEntity = Pessoa.class)
-public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, Long> {
-    
+public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, Long> implements CriteriaSupport<Pessoa> {
+
     @Inject
     private Logger log;
 
     public List<Pessoa> findByNomeETelefone(String nome, String numero) {
-        log.trace("entrou em findBynomeETelefone");
-        log.tracef("nome = %s", nome);
-        log.tracef("numero = %s", numero);
-        
-        log.debug("Construindo a consulta");
-        StringBuilder strQuery = new StringBuilder();
-        String conector = " where ";
-        strQuery.append("from Pessoa p");
+        log.trace("Entrou em findByNomeETelefone");
+        Criteria<Pessoa, Pessoa> crit = criteria().
+                distinct().
+                fetch(Pessoa_.telefones);
 
         if (nome != null && !nome.trim().isEmpty()) {
-            strQuery.append(conector).append("lower(p.nome) like lower(:nome)");
-            conector = " and ";
-        }
-        
-        if (numero != null && !numero.isEmpty()) {
-            strQuery.append(conector).append("exists ( "
-                    + "select 1 " 
-                    + "  from Telefone t " 
-                    + "  where t.pessoa = p " 
-                    + "    and t.numero like :numero) ");
-            conector = " and ";
-        }
-
-        log.debug("Criar a typedQuery");
-        TypedQuery<Pessoa> query = typedQuery(strQuery.toString());
-
-        log.debug("Passar os parãmetros");
-        if (nome != null && !nome.trim().isEmpty()) {
-            query.setParameter("nome", "%" + nome + "%");
+            log.debug("Filtrando por nome");
+            crit.like(Pessoa_.nome, "%" + nome + "%");
         }
         if (numero != null && !numero.trim().isEmpty()) {
-            query.setParameter("numero", numero + "%");
+            log.debug("Filtrando por número");
+            crit.join(Pessoa_.telefones,
+                    where(Telefone.class).
+                    like(Telefone_.numero, "%" + numero + "%"));
         }
 
-        log.debug("Executar a consulta");
-        return query.getResultList();
+        log.debug("Retornar os resultados");
+        return crit.getResultList();
     }
+
 }
