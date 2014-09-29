@@ -14,12 +14,17 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 
 /**
  *
  * @author denisf
  */
 @Entity
+@XmlRootElement
+@JsonAutoDetect(fieldVisibility=Visibility.NONE, getterVisibility=Visibility.PUBLIC_ONLY, isGetterVisibility=Visibility.NONE)
 public class Pessoa implements Serializable {
 
     public enum Sexo {

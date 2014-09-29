@@ -44,4 +44,16 @@ public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, 
         return crit.getResultList();
     }
 
+    public Pessoa findById(Long id) {
+        log.trace("Entrou em findByNomeETelefone");
+        Criteria<Pessoa, Pessoa> crit = criteria().
+                distinct().
+                fetch(Pessoa_.telefones);
+
+        log.debug("Filtrando por id");
+        crit.eq(Pessoa_.id, id);
+
+        log.debug("Retornar os resultados");
+        return crit.getSingleResult();
+    }
 }
