@@ -7,24 +7,37 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonUnwrapped;
 
 /**
  *
  * @author denisf
  */
 @Entity
+@JsonIgnoreProperties({"pessoa"})
+@JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.PUBLIC_ONLY, setterVisibility = Visibility.NONE)
 public class Telefone implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
+    @XmlTransient
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonIgnore
+    @XmlTransient
     @ManyToOne
     @JoinColumn(nullable = false)
     private Pessoa pessoa;
 
+    @JsonUnwrapped
     @ManyToOne()
     @JoinColumn(nullable = false)
     private TipoTelefone tipo;

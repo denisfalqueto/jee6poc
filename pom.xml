@@ -13,9 +13,44 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <deltaspike.version>1.0.1</deltaspike.version>
+        <resteasy.version>2.3.7.Final</resteasy.version>
+        <resteasy.version.eap.6.3>2.3.7.Final</resteasy.version.eap.6.3>
+        <resteasy.version.latest>3.0.9.Final</resteasy.version.latest>
+        <jackson.version>1.9.9</jackson.version>
+        <jackson.version.eap.6.3>1.9.9</jackson.version.eap.6.3>
+        <jackson.version.latest>3.0.9.Final</jackson.version.latest>
         
         <ambiente>Development</ambiente>
     </properties>
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jaxrs</artifactId>
+                <version>${resteasy.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-multipart-provider</artifactId>
+                <version>${resteasy.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jackson-provider</artifactId>
+                <version>${resteasy.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}}</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     
     <dependencies>
         <!-- DeltaSpike - extensions for CDI -->
@@ -211,6 +246,20 @@
             <artifactId>jboss-logging</artifactId>
             <version>3.1.0.GA</version>
             <scope>provided</scope>
+        </dependency>
+        
+        <!-- Resteasy e Jackson -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-multipart-provider</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson-provider</artifactId>
         </dependency>
     </dependencies>
 

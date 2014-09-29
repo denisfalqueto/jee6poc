@@ -5,19 +5,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  *
  * @author denisf
  */
 @Entity
+@JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.PUBLIC_ONLY, setterVisibility = Visibility.NONE)
 public class TipoTelefone implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @JsonIgnore
+    @XmlTransient
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonProperty("tipo")
     private String descricao;
 
     public Long getId() {
