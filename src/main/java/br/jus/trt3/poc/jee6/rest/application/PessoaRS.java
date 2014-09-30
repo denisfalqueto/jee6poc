@@ -4,21 +4,23 @@ import br.jus.trt3.poc.jee6.entity.Pessoa;
 import br.jus.trt3.poc.jee6.repository.PessoaRepository;
 import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.jboss.resteasy.spi.HttpResponse;
-import org.jboss.resteasy.spi.NotFoundException;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
+import org.jboss.resteasy.annotations.GZIP;
 
 /**
  *
  * @author alexadb
  */
+@Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
 @Path("/pessoa")
 public class PessoaRS {
 
@@ -26,31 +28,29 @@ public class PessoaRS {
     private PessoaRepository pessoaRepository;
 
     @GET
-    @Produces("application/json")
+    //@Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
+    @GZIP
     public List<Pessoa> getPessoas(@QueryParam("nome") String nome, 
-            @QueryParam("telefone") String telefone, @Context final HttpServletResponse response)
-            throws NotFoundException {
+            @QueryParam("telefone") String telefone) {
         List<Pessoa> pessoas = pessoaRepository.findByNomeETelefone(nome, telefone);
         
         if (pessoas.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            try {
-                response.flushBuffer();
-            } catch(Exception e){}
+            ResponseBuilder builder = Response.status(Status.NOT_FOUND);
+            builder.entity("{ \"error\": \"Entidade não encontrada\" }");
+            throw new WebApplicationException(builder.build());
         }
         return pessoas;
     }
     
     @GET
-    @Produces("application/json")
-    @Path("/id/{id}")
-    public Pessoa getPessoa(@PathParam("id") Long id, @Context final HttpServletResponse response) throws NotFoundException{
+    @Path("/{id: \\d+}")
+    //@Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
+    public Pessoa getPessoa(@PathParam("id") Long id){
         Pessoa pessoa = pessoaRepository.findBy(id);
         if (pessoa == null) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            try {
-                response.flushBuffer();
-            } catch(Exception e){}
+            ResponseBuilder builder = Response.status(Status.NOT_FOUND);
+            builder.entity("{ \"error\": \"Entidade não encontrada\" }");
+            throw new WebApplicationException(builder.build());
         }
         return pessoa;
     }
