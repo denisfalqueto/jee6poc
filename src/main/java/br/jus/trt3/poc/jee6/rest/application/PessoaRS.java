@@ -4,7 +4,9 @@ import br.jus.trt3.poc.jee6.entity.Pessoa;
 import br.jus.trt3.poc.jee6.repository.PessoaRepository;
 import java.util.List;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,13 +17,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import org.jboss.resteasy.annotations.GZIP;
+import org.jboss.resteasy.spi.validation.ValidateRequest;
 
 /**
  *
  * @author alexadb
  */
 @Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
+@Consumes(MediaType.APPLICATION_JSON+"; charset=UTF-8")
 @Path("/pessoa")
+@ValidateRequest
 public class PessoaRS {
 
     @Inject
@@ -54,4 +59,7 @@ public class PessoaRS {
         }
         return pessoa;
     }
+    
+    //@POST
+    //public Pessoa 
 }
