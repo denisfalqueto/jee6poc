@@ -1,18 +1,25 @@
 package br.jus.trt3.poc.jee6.entity;
 
+import br.jus.trt3.poc.jee6.repository.TipoTelefoneRepository;
 import java.io.Serializable;
+import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonUnwrapped;
+import org.codehaus.jackson.map.JsonMappingException;
 
 /**
  *
@@ -37,13 +44,32 @@ public class Telefone implements Serializable {
     @JoinColumn(nullable = false)
     private Pessoa pessoa;
 
-    @JsonUnwrapped
     @ManyToOne()
     @JoinColumn(nullable = false)
+    @JsonUnwrapped
     private TipoTelefone tipo;
 
     private String numero;
 
+    @Transient
+    @Inject
+    private TipoTelefoneRepository tipoTelefoneRepository;
+    
+    public Telefone() {
+    }
+    
+    @JsonCreator
+    public Telefone(@JsonProperty("tipo") String tipo, @JsonProperty("numero") String numero) throws JsonMappingException {
+        this.numero = numero;
+        TipoTelefone tipoTelefone = new TipoTelefone();
+        tipoTelefone.setDescricao(tipo);
+        List<TipoTelefone> tipoTelefones = tipoTelefoneRepository.findBy(tipoTelefone, TipoTelefone_.descricao);
+        if (tipoTelefones == null || tipoTelefones.isEmpty()) {
+            throw new JsonMappingException("TipoTelefone inexistente");
+        }
+        this.tipo = tipoTelefones.get(0);
+    }
+    
     public Long getId() {
         return id;
     }

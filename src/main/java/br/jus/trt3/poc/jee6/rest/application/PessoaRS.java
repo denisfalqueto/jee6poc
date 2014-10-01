@@ -1,10 +1,13 @@
 package br.jus.trt3.poc.jee6.rest.application;
 
 import br.jus.trt3.poc.jee6.entity.Pessoa;
+import br.jus.trt3.poc.jee6.entity.Telefone;
 import br.jus.trt3.poc.jee6.repository.PessoaRepository;
+import br.jus.trt3.poc.jee6.repository.TipoTelefoneRepository;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -32,6 +35,9 @@ public class PessoaRS {
     @Inject
     private PessoaRepository pessoaRepository;
 
+    @Inject
+    private TipoTelefoneRepository tipoTelefoneRepository;
+    
     @GET
     //@Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
     @GZIP
@@ -60,6 +66,11 @@ public class PessoaRS {
         return pessoa;
     }
     
-    //@POST
-    //public Pessoa 
+    @POST
+    public Response addPessoa(Pessoa pessoa) {
+        for (Telefone telefone : pessoa.getTelefones()) {
+            telefone.setPessoa(pessoa);
+        }
+        return Response.status(Status.CREATED).entity(pessoa.getId()).build();
+    }
 }

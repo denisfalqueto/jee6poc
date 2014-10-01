@@ -46,7 +46,13 @@
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}}</version>
+                <version>${jackson.version}</version>
+                <!--<scope>provided</scope>-->
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson.version}</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
@@ -293,6 +299,11 @@
                             </excludes>
                         </resource>
                     </webResources>
+                    <archive>
+                        <manifestEntries>
+                            <Dependencies>org.codehaus.jackson.jackson-jaxrs,org.codehaus.jackson.jackson-mapper-asl</Dependencies>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
