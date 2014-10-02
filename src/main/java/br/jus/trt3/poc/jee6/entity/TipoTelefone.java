@@ -22,13 +22,10 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 public class TipoTelefone implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @JsonIgnore
-    @XmlTransient
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JsonProperty("tipo")
     private String descricao;
 
     public Long getId() {

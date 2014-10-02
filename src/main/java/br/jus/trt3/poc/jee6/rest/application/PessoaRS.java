@@ -71,6 +71,7 @@ public class PessoaRS {
         for (Telefone telefone : pessoa.getTelefones()) {
             telefone.setPessoa(pessoa);
         }
+        pessoaRepository.save(pessoa);
         return Response.status(Status.CREATED).entity(pessoa.getId()).build();
     }
 }

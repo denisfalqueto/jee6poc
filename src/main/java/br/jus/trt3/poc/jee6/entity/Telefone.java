@@ -32,8 +32,6 @@ public class Telefone implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @JsonIgnore
-    @XmlTransient
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -46,30 +44,10 @@ public class Telefone implements Serializable {
 
     @ManyToOne()
     @JoinColumn(nullable = false)
-    @JsonUnwrapped
     private TipoTelefone tipo;
 
     private String numero;
 
-    @Transient
-    @Inject
-    private TipoTelefoneRepository tipoTelefoneRepository;
-    
-    public Telefone() {
-    }
-    
-    @JsonCreator
-    public Telefone(@JsonProperty("tipo") String tipo, @JsonProperty("numero") String numero) throws JsonMappingException {
-        this.numero = numero;
-        TipoTelefone tipoTelefone = new TipoTelefone();
-        tipoTelefone.setDescricao(tipo);
-        List<TipoTelefone> tipoTelefones = tipoTelefoneRepository.findBy(tipoTelefone, TipoTelefone_.descricao);
-        if (tipoTelefones == null || tipoTelefones.isEmpty()) {
-            throw new JsonMappingException("TipoTelefone inexistente");
-        }
-        this.tipo = tipoTelefones.get(0);
-    }
-    
     public Long getId() {
         return id;
     }
