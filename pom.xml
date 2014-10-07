@@ -13,12 +13,12 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <deltaspike.version>1.0.1</deltaspike.version>
-        <resteasy.version>2.3.7.Final</resteasy.version>
+        <resteasy.version>3.0.9.Final</resteasy.version>
         <resteasy.version.eap.6.3>2.3.7.Final</resteasy.version.eap.6.3>
         <resteasy.version.latest>3.0.9.Final</resteasy.version.latest>
-        <jackson.version>1.9.9</jackson.version>
+        <jackson.version>2.2.3</jackson.version>
         <jackson.version.eap.6.3>1.9.9</jackson.version.eap.6.3>
-        <jackson.version.latest>3.0.9.Final</jackson.version.latest>
+        <jackson.version.latest>2.4.3</jackson.version.latest>
         
         <ambiente>Development</ambiente>
     </properties>
@@ -30,6 +30,7 @@
                 <artifactId>resteasy-jaxrs</artifactId>
                 <version>${resteasy.version}</version>
                 <scope>provided</scope>
+                <type>jar</type>
             </dependency>
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
@@ -44,17 +45,49 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
-                <!--<scope>provided</scope>-->
-            </dependency>
-            <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-mapper-asl</artifactId>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
                 <version>${jackson.version}</version>
                 <scope>provided</scope>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-hibernate4</artifactId>
+                <version>${jackson.version}</version>
+                <scope>compile</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-databind</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-annotations</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- Support for JAX-B annotations as additional configuration -->
+<!--            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-jaxb-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>-->
         </dependencies>
     </dependencyManagement>
     
@@ -267,6 +300,27 @@
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson-provider</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate4</artifactId>
+        </dependency>
+        <!-- Support for JAX-B annotations as additional configuration -->
+        <!--        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+        </dependency>-->
     </dependencies>
 
     <build>
@@ -299,11 +353,11 @@
                             </excludes>
                         </resource>
                     </webResources>
-                    <archive>
+                    <!--                    <archive>
                         <manifestEntries>
-                            <Dependencies>org.codehaus.jackson.jackson-core-asl,org.codehaus.jackson.jackson-jaxrs,org.codehaus.jackson.jackson-mapper-asl</Dependencies>
+                            <Dependencies>com.fasterxml.jackson.core.jackson-core-asl,org.codehaus.jackson.jackson-jaxrs,org.codehaus.jackson.jackson-mapper-asl</Dependencies>
                         </manifestEntries>
-                    </archive>
+                    </archive>-->
                 </configuration>
             </plugin>
             <plugin>
@@ -371,7 +425,7 @@
                                 </property>
                             </properties>
                         </wadlGeneratorDescription>
-<!--                        <wadlGeneratorDescription>
+                        <!--                        <wadlGeneratorDescription>
                             <className>com.sun.jersey.server.wadl.generators.resourcedoc.WadlGeneratorResourceDocSupport</className>
                             <properties>
                                 <property>

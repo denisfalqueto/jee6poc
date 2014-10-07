@@ -1,32 +1,23 @@
 package br.jus.trt3.poc.jee6.entity;
 
-import br.jus.trt3.poc.jee6.repository.TipoTelefoneRepository;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.List;
-import javax.inject.Inject;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonUnwrapped;
-import org.codehaus.jackson.map.JsonMappingException;
 
 /**
  *
  * @author denisf
  */
 @Entity
-@JsonIgnoreProperties({"pessoa"})
 @JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.PUBLIC_ONLY, setterVisibility = Visibility.NONE)
 public class Telefone implements Serializable {
 
@@ -36,8 +27,7 @@ public class Telefone implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JsonIgnore
-    @XmlTransient
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(nullable = false)
     private Pessoa pessoa;
@@ -56,10 +46,12 @@ public class Telefone implements Serializable {
         this.id = id;
     }
 
+    @JsonIgnore
     public Pessoa getPessoa() {
         return pessoa;
     }
 
+    @JsonIgnore
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }

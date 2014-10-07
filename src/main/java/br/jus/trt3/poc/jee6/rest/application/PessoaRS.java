@@ -20,7 +20,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import org.jboss.resteasy.annotations.GZIP;
-import org.jboss.resteasy.spi.validation.ValidateRequest;
 
 /**
  *
@@ -29,7 +28,6 @@ import org.jboss.resteasy.spi.validation.ValidateRequest;
 @Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
 @Consumes(MediaType.APPLICATION_JSON+"; charset=UTF-8")
 @Path("/pessoa")
-@ValidateRequest
 public class PessoaRS {
 
     @Inject
@@ -39,7 +37,6 @@ public class PessoaRS {
     private TipoTelefoneRepository tipoTelefoneRepository;
     
     @GET
-    //@Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
     @GZIP
     public List<Pessoa> getPessoas(@QueryParam("nome") String nome, 
             @QueryParam("telefone") String telefone) {
