@@ -7,7 +7,6 @@ import br.jus.trt3.poc.jee6.repository.TipoTelefoneRepository;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -52,7 +51,6 @@ public class PessoaRS {
     
     @GET
     @Path("/{id: \\d+}")
-    //@Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
     public Pessoa getPessoa(@PathParam("id") Long id){
         Pessoa pessoa = pessoaRepository.findBy(id);
         if (pessoa == null) {
