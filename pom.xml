@@ -19,7 +19,9 @@
         <jackson.version>2.2.3</jackson.version>
         <jackson.version.eap.6.3>1.9.9</jackson.version.eap.6.3>
         <jackson.version.latest>2.4.3</jackson.version.latest>
-        
+
+        <server.id>jenkins</server.id>
+        <server.group>main-server-group</server.group>        
         <ambiente>Development</ambiente>
     </properties>
     
@@ -435,6 +437,28 @@
                             </properties>
                         </wadlGeneratorDescription>-->
                     </wadlGenerators>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jboss.as.plugins</groupId>
+                <artifactId>jboss-as-maven-plugin</artifactId>
+                <version>7.6.Final</version>
+                <executions>
+                    <execution>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <id>${server.id}</id>
+                    <name>${project.name}.war</name>
+                    <domain>
+                        <server-groups>
+                            <server-group>${server.group}</server-group>
+                        </server-groups>
+                    </domain>
                 </configuration>
             </plugin>
         </plugins>
