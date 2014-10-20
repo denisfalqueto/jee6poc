@@ -26,7 +26,7 @@ import org.jboss.resteasy.annotations.GZIP;
  */
 @Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
 @Consumes(MediaType.APPLICATION_JSON+"; charset=UTF-8")
-@Path("/pessoa")
+@Path("/pessoas")
 public class PessoaRS {
 
     @Inject

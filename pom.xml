@@ -21,7 +21,8 @@
         <jackson.version.latest>2.4.3</jackson.version.latest>
 
         <server.id>jenkins</server.id>
-        <server.group>main-server-group</server.group>        
+        <server.group>test-server-group</server.group>      
+        <server.profile>full</server.profile>  
         <ambiente>Development</ambiente>
     </properties>
     
@@ -440,27 +441,114 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.jboss.as.plugins</groupId>
-                <artifactId>jboss-as-maven-plugin</artifactId>
-                <version>7.6.Final</version>
-                <executions>
-                    <execution>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-clean-plugin</artifactId>
                 <configuration>
-                    <id>${server.id}</id>
-                    <name>${project.name}.war</name>
-                    <domain>
-                        <server-groups>
-                            <server-group>${server.group}</server-group>
-                        </server-groups>
-                    </domain>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/src/main/webapp</directory>
+                            <includes>
+                                <include>**/application.wadl</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>jboss-add-datasource</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jboss.as.plugins</groupId>
+                        <artifactId>jboss-as-maven-plugin</artifactId>
+                        <version>7.6.Final</version>
+                        <executions>
+                            <execution>
+                                <id>add-datasource</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>add-resource</goal>
+                                </goals>
+                                <configuration>
+                                    <address>subsystem=datasources</address>
+                                    <resource>
+                                        <address>data-source=ContatosDS</address>
+                                        <enable-resource>true</enable-resource>
+                                        <properties>
+                                            <connection-url>
+                                                jdbc:oracle:thin:@(DESCRIPTION = 
+                                                (ADDRESS = (PROTOCOL = TCP)(HOST = dg-gv-1.trt)(PORT = 1521))
+                                                (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = dsv2.trt3.jus.br)))
+                                            </connection-url>
+                                            <jndi-name>java:/ContatosDS</jndi-name>
+                                            <enabled>true</enabled>
+                                            <pool-name>oracle2</pool-name>
+                                            <!--                                            <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>-->
+                                            <driver-name>oracle</driver-name>
+                                            <user-name>fabianog</user-name>
+                                            <password>mew741</password>                                        
+                                            <!--                                            <validation>
+                                                <validate-on-match>false</validate-on-match>
+                                                <background-validation>false</background-validation>
+                                            </validation>
+                                            <statement>
+                                                <share-prepared-statements>false</share-prepared-statements>
+                                            </statement>-->
+                                        </properties>
+                                    </resource>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <id>${server.id}</id>
+                            <name>${project.name}.war</name>
+                            <domain>
+                                <profiles>
+                                    <profile>${server.profile}</profile>
+                                </profiles>
+                                <server-groups>
+                                    <server-group>${server.group}</server-group>
+                                </server-groups>
+                            </domain>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jboss-deploy-war</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jboss.as.plugins</groupId>
+                        <artifactId>jboss-as-maven-plugin</artifactId>
+                        <version>7.6.Final</version>
+                        <executions>
+                            <execution>
+                                <id>deploy-test-app</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <id>${server.id}</id>
+                            <name>${project.name}.war</name>
+                            <domain>
+                                <profiles>
+                                    <profile>${server.profile}</profile>
+                                </profiles>
+                                <server-groups>
+                                    <server-group>${server.group}</server-group>
+                                </server-groups>
+                            </domain>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
