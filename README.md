@@ -51,21 +51,20 @@ Dentro do diretório modules do JBoss, criar em oracle/jdbc/main o arquivo modul
 
 Copiar também para modules/oracle/jdbc/main o arquivo ojdbc6.jar baixado do site da Oracle.
 
-Mais informações em 
-https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Administration_and_Configuration_Guide/Install_a_JDBC_Driver_as_a_Core_Module1.html
-e https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6.1/html/Administration_and_Configuration_Guide/JDBC_Driver_Download_Locations1.html
+Mais informações em:
+
+* https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Administration_and_Configuration_Guide/Install_a_JDBC_Driver_as_a_Core_Module1.html
+* https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6.1/html/Administration_and_Configuration_Guide/JDBC_Driver_Download_Locations1.html
 
 #### RestEasy ####
 
 Em http://resteasy.jboss.org/ selecionar download e fazer o download da versão 3.0.9.Final do RestEasy.
 
-Após fazer o download do RestEasy de 
-http://sourceforge.net/projects/resteasy/files/Resteasy%20JAX-RS/3.0.9.Final/resteasy-jaxrs-3.0.9.Final-all.zip/download
+Após fazer o download do RestEasy de http://sourceforge.net/projects/resteasy/files/Resteasy%20JAX-RS/3.0.9.Final/resteasy-jaxrs-3.0.9.Final-all.zip/download
 descompactá-lo e localizer dentro dele o arquivo resteasy-jboss-modules-3.0.9.Final.zip, e 
 descompactar resteasy-jboss-modules-3.0.9.Final.zip no diretório modules/system/layers/base/
 
-Maiores informações em 
-http://docs.jboss.org/resteasy/docs/3.0.9.Final/userguide/html/Installation_Configuration.html#upgrading-eap61
+Maiores informações em http://docs.jboss.org/resteasy/docs/3.0.9.Final/userguide/html/Installation_Configuration.html#upgrading-eap61
 
 ### Configuração do domain ###
 
@@ -76,6 +75,7 @@ quando necessário, em vez da senha plain text. Nesta prova de conceito não ser
 uma aplicação real é a forma recomendada.
 
 Para gerar a senha criptografada, execute:
+
     $ java -cp $JBOSS_HOME/modules/system/layers/base/org/picketbox/main/picketbox-4.0.19.SP8-redhat-1.jar:\
       $JBOSS_HOME/modules/system/layers/base/org/picketbox/main/picketbox-4.0.19SP8-redhat-1.jar:\
       $JBOSS_HOME/modules/system/layers/base/org/jboss/logging/main/jboss-logging-3.1.4.GA-redhat-1.jar:\
@@ -84,13 +84,18 @@ Para gerar a senha criptografada, execute:
 
 Guarde a senha criptografada emitida no terminal.
 
-Configurações a serem colocadas em $JBOSS_HOME/domain/configuration/domain.xml:
+Edite o arquivo $JBOSS_HOME/domain/configuration/domain.xml.
 
 Procure por
+
     <subsystem xmlns="urn:jboss:domain:datasources:1.2">
+
 em cada profile (default, ha, full, full-ha, etc.), e dentro da tag
+
     <security-domains>
+
 acrescente o seguinte domain:
+
     <security-domain name="encrypted-ds" cache-type="default">
         <authentication>
             <login-module code="org.picketbox.datasource.security.SecureIdentityLoginModule" flag="required">
@@ -120,10 +125,11 @@ Para publicar a aplicação em servidor no JBoss Server Group "test-server-group
 
     $ mvn -X -P jboss-deploy-war -Djboss-as.hostname=<nome ou IP do host jboss> install
 
-Para modificar o JBoss Server Group, acrescentar à chamada do maven a variável -Dserver.group=<nome do server group>
+Para modificar o JBoss Server Group, acrescentar à chamada do maven a variável -Dserver.group=\<nome do server group\>
 
-Para modificar o Server Profile, acrescentar à chamada do maven a variável -Dserver.profile=<nome do server profile>
+Para modificar o Server Profile, acrescentar à chamada do maven a variável -Dserver.profile=\<nome do server profile\>
 
 Para remover a aplicação do servidor onde foi publicada:
 
     $ mvn -X -P jboss-deploy-war -Djboss-as.hostname=<nome ou IP do host jboss> jboss-as:undeploy
+
