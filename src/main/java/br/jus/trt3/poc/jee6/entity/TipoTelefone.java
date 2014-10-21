@@ -1,16 +1,20 @@
 package br.jus.trt3.poc.jee6.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
 /**
  *
  * @author denisf
  */
 @Entity
+@JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.PUBLIC_ONLY, setterVisibility = Visibility.NONE)
 public class TipoTelefone implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -47,4 +47,12 @@
                 <netbeans.deploy.clientUrlPart>/faces/index.xhtml</netbeans.deploy.clientUrlPart>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-generate WADL</actionName>
+            <displayName>generate WADL</displayName>
+            <goals>
+                <goal>compile</goal>
+                <goal>com.sun.jersey.contribs:maven-wadl-plugin:generate</goal>
+            </goals>
+        </action>
     </actions>

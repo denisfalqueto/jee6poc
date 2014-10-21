@@ -1,5 +1,8 @@
 package br.jus.trt3.poc.jee6.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +23,7 @@ import javax.persistence.Transient;
  * @author denisf
  */
 @Entity
+@JsonAutoDetect(fieldVisibility=Visibility.NONE, getterVisibility=Visibility.PUBLIC_ONLY, isGetterVisibility=Visibility.NONE)
 public class Pessoa implements Serializable {
 
     public enum Sexo {
@@ -34,6 +38,7 @@ public class Pessoa implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataNascimento;
     private Sexo sexo;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa")
     private Set<Telefone> telefones = new HashSet<Telefone>();
 

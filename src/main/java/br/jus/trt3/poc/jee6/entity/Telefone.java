@@ -1,5 +1,9 @@
 package br.jus.trt3.poc.jee6.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +17,7 @@ import javax.persistence.ManyToOne;
  * @author denisf
  */
 @Entity
+@JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.PUBLIC_ONLY, setterVisibility = Visibility.NONE)
 public class Telefone implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,6 +26,7 @@ public class Telefone implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(nullable = false)
     private Pessoa pessoa;
@@ -39,10 +45,12 @@ public class Telefone implements Serializable {
         this.id = id;
     }
 
+    @JsonIgnore
     public Pessoa getPessoa() {
         return pessoa;
     }
 
+    @JsonIgnore
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }

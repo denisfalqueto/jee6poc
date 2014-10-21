@@ -1,6 +1,7 @@
 package br.jus.trt3.poc.jee6.repository;
 
 import br.jus.trt3.poc.jee6.entity.TipoTelefone;
+import br.jus.trt3.poc.jee6.entity.TipoTelefone_;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 
