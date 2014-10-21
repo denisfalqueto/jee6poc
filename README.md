@@ -76,6 +76,7 @@ quando necessário, em vez da senha plain text. Nesta prova de conceito não ser
 uma aplicação real é a forma recomendada.
 
 Para gerar a senha criptografada, execute:
+
     $ java -cp $JBOSS_HOME/modules/system/layers/base/org/picketbox/main/picketbox-4.0.19.SP8-redhat-1.jar:\
       $JBOSS_HOME/modules/system/layers/base/org/picketbox/main/picketbox-4.0.19SP8-redhat-1.jar:\
       $JBOSS_HOME/modules/system/layers/base/org/jboss/logging/main/jboss-logging-3.1.4.GA-redhat-1.jar:\
@@ -87,10 +88,15 @@ Guarde a senha criptografada emitida no terminal.
 Configurações a serem colocadas em $JBOSS_HOME/domain/configuration/domain.xml:
 
 Procure por
+
     <subsystem xmlns="urn:jboss:domain:datasources:1.2">
+
 em cada profile (default, ha, full, full-ha, etc.), e dentro da tag
+
     <security-domains>
+
 acrescente o seguinte domain:
+
     <security-domain name="encrypted-ds" cache-type="default">
         <authentication>
             <login-module code="org.picketbox.datasource.security.SecureIdentityLoginModule" flag="required">
