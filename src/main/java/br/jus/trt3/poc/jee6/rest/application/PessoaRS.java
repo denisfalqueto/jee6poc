@@ -3,12 +3,14 @@ package br.jus.trt3.poc.jee6.rest.application;
 import br.jus.trt3.poc.jee6.entity.Pessoa;
 import br.jus.trt3.poc.jee6.entity.Telefone;
 import br.jus.trt3.poc.jee6.repository.PessoaRepository;
-import br.jus.trt3.poc.jee6.repository.TipoTelefoneRepository;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,6 +26,7 @@ import org.jboss.resteasy.annotations.GZIP;
  *
  * @author alexadb
  */
+//@GZIP
 @Produces(MediaType.APPLICATION_JSON+"; charset=UTF-8")
 @Consumes(MediaType.APPLICATION_JSON+"; charset=UTF-8")
 @Path("/pessoas")
@@ -32,11 +35,7 @@ public class PessoaRS {
     @Inject
     private PessoaRepository pessoaRepository;
 
-    @Inject
-    private TipoTelefoneRepository tipoTelefoneRepository;
-    
     @GET
-    @GZIP
     public List<Pessoa> getPessoas(@QueryParam("nome") String nome, 
             @QueryParam("telefone") String telefone) {
         List<Pessoa> pessoas = pessoaRepository.findByNomeETelefone(nome, telefone);
@@ -62,11 +61,36 @@ public class PessoaRS {
     }
     
     @POST
-    public Response addPessoa(Pessoa pessoa) {
+    public Response add(Pessoa pessoa) {
         for (Telefone telefone : pessoa.getTelefones()) {
             telefone.setPessoa(pessoa);
         }
         pessoaRepository.save(pessoa);
         return Response.status(Status.CREATED).entity(pessoa.getId()).build();
+    }
+   
+    @PUT
+    public Pessoa update(Pessoa pessoa) {
+        Pessoa pessoaParaAtualizar = pessoaRepository.findBy(pessoa.getId());
+        if (pessoaParaAtualizar != null) {
+            pessoaRepository.save(pessoa);
+            return pessoa;
+        } else {
+            throw new WebApplicationException(Response.status(Status.NOT_FOUND).build());
+        }
+    }
+    
+    @DELETE
+    @Path("/{id: \\d+}")
+    public Response delete(@PathParam("id") Long id) {
+        Pessoa pessoa = pessoaRepository.findBy(id);
+        if (pessoa != null) {
+            //return Response.status(Status.OK).entity(pessoa).build();
+            pessoaRepository.remove(pessoa);
+            return Response.status(Status.ACCEPTED).build();
+        } else {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+        
     }
 }
