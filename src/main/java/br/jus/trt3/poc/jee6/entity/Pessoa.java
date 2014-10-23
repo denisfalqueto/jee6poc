@@ -39,7 +39,7 @@ public class Pessoa implements Serializable {
     private Date dataNascimento;
     private Sexo sexo;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa", orphanRemoval = true)
     private Set<Telefone> telefones = new HashSet<Telefone>();
 
     public Long getId() {
