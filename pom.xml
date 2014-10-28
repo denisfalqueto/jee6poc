@@ -2,12 +2,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <prerequisites>
+        <maven>3.0.3</maven>
+    </prerequisites>
+
     <groupId>br.jus.trt.bibliotecas</groupId>
     <artifactId>jee6poc</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>jee6poc</name>
+
+    <scm>
+      <connection>scm:git:https://github.com/denisfalqueto/jee6poc.git</connection>
+    </scm>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -24,6 +32,7 @@
         <server.group>test-server-group</server.group>      
         <server.profile>full</server.profile>  
         <ambiente>Development</ambiente>
+        <buildNumber.checkChanges>false</buildNumber.checkChanges>
     </properties>
     
     <dependencyManagement>
@@ -341,6 +350,24 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.3</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>${buildNumber.checkChanges}</doCheck>
+                    <doUpdate>true</doUpdate>
+                    <shortRevisionLength>12</shortRevisionLength>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.4</version>
@@ -356,11 +383,14 @@
                             </excludes>
                         </resource>
                     </webResources>
-                    <!--                    <archive>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
                         <manifestEntries>
-                            <Dependencies>com.fasterxml.jackson.core.jackson-core-asl,org.codehaus.jackson.jackson-jaxrs,org.codehaus.jackson.jackson-mapper-asl</Dependencies>
+                            <Commit-Id>${buildNumber}</Commit-Id>
                         </manifestEntries>
-                    </archive>-->
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -428,15 +458,6 @@
                                 </property>
                             </properties>
                         </wadlGeneratorDescription>
-                        <!--                        <wadlGeneratorDescription>
-                            <className>com.sun.jersey.server.wadl.generators.resourcedoc.WadlGeneratorResourceDocSupport</className>
-                            <properties>
-                                <property>
-                                    <name>resourceDocFile</name>
-                                    <value>${project.build.outputDirectory}/resourcedoc.xml</value>
-                                </property>
-                            </properties>
-                        </wadlGeneratorDescription>-->
                     </wadlGenerators>
                 </configuration>
             </plugin>
@@ -456,67 +477,6 @@
         </plugins>
     </build>
     <profiles>
-        <profile>
-            <id>jboss-add-datasource</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jboss.as.plugins</groupId>
-                        <artifactId>jboss-as-maven-plugin</artifactId>
-                        <version>7.6.Final</version>
-                        <executions>
-                            <execution>
-                                <id>add-datasource</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>add-resource</goal>
-                                </goals>
-                                <configuration>
-                                    <address>subsystem=datasources</address>
-                                    <resource>
-                                        <address>data-source=ContatosDS</address>
-                                        <enable-resource>true</enable-resource>
-                                        <properties>
-                                            <connection-url>
-                                                jdbc:oracle:thin:@(DESCRIPTION = 
-                                                (ADDRESS = (PROTOCOL = TCP)(HOST = dg-gv-1.trt)(PORT = 1521))
-                                                (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = dsv2.trt3.jus.br)))
-                                            </connection-url>
-                                            <jndi-name>java:/ContatosDS</jndi-name>
-                                            <enabled>true</enabled>
-                                            <pool-name>oracle2</pool-name>
-                                            <!--                                            <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>-->
-                                            <driver-name>oracle</driver-name>
-                                            <user-name>fabianog</user-name>
-                                            <password>mew741</password>                                        
-                                            <!--                                            <validation>
-                                                <validate-on-match>false</validate-on-match>
-                                                <background-validation>false</background-validation>
-                                            </validation>
-                                            <statement>
-                                                <share-prepared-statements>false</share-prepared-statements>
-                                            </statement>-->
-                                        </properties>
-                                    </resource>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <id>${server.id}</id>
-                            <name>${project.name}.war</name>
-                            <domain>
-                                <profiles>
-                                    <profile>${server.profile}</profile>
-                                </profiles>
-                                <server-groups>
-                                    <server-group>${server.group}</server-group>
-                                </server-groups>
-                            </domain>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>jboss-deploy-war</id>
             <build>
