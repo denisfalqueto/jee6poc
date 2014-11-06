@@ -27,7 +27,7 @@
         <jackson.version>2.2.3</jackson.version>
         <jackson.version.eap.6.3>1.9.9</jackson.version.eap.6.3>
         <jackson.version.latest>2.4.3</jackson.version.latest>
-
+        
         <server.id>jenkins</server.id>
         <server.group>test-server-group</server.group>      
         <server.profile>full</server.profile>  
@@ -100,6 +100,13 @@
                 <artifactId>jackson-module-jaxb-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>-->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4j2.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     
@@ -333,6 +340,13 @@
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
         </dependency>-->
+        
+        <!-- Recuperação de informações do MANIFEST.MF em tempo de execução -->
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-manifests</artifactId>
+            <version>1.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -389,6 +403,8 @@
                         </manifest>
                         <manifestEntries>
                             <Commit-Id>${buildNumber}</Commit-Id>
+                            <Application-Id>${project.artifactId}</Application-Id>
+                            <Application-Version>${project.version}</Application-Version>
                         </manifestEntries>
                     </archive>
                 </configuration>
