@@ -18,6 +18,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jboss.logging.Logger;
 
 @ManagedBean(name = "pessoaController")
@@ -26,6 +28,8 @@ public class PessoaController implements Serializable {
 
     @Inject
     private PessoaRepository pessoaRepository;
+    @Inject
+    private EntityManager entityManager;
     @Inject
     private static Logger log;
     private List<Pessoa> items = null;
@@ -113,14 +117,18 @@ public class PessoaController implements Serializable {
         return items;
     }
 
+    @Transactional
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             try {
                 if (persistAction != PersistAction.DELETE) {
                     getRepository().save(selected);
                 } else {
-                    getRepository().remove(selected);
+                    entityManager.remove(entityManager.merge(selected));
                 }
+                items = getRepository().findByNomeETelefone(filtroNome, filtroTelefone);
+                FacesContext ctxt = FacesContext.getCurrentInstance();
+                ctxt.getPartialViewContext().getRenderIds().add("PessoaListForm");
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";
