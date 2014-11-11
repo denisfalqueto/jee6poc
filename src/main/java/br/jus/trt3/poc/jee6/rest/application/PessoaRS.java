@@ -4,6 +4,7 @@ import br.jus.trt3.poc.jee6.entity.Pessoa;
 import br.jus.trt3.poc.jee6.entity.Telefone;
 import br.jus.trt3.poc.jee6.repository.PessoaRepository;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.Consumes;
@@ -21,6 +22,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jboss.resteasy.annotations.GZIP;
 
 /**
@@ -39,17 +42,20 @@ public class PessoaRS {
     
     @Inject
     private EntityManager entityManager;
-
+    
+    private static Logger logger = LogManager.getLogger(PessoaRS.class);
+    
     @GET
     public List<Pessoa> getPessoas(@QueryParam("nome") String nome, 
             @QueryParam("telefone") String telefone) {
         List<Pessoa> pessoas = pessoaRepository.findByNomeETelefone(nome, telefone);
         
         if (pessoas.isEmpty()) {
+            logger.debug("Pessoa com nome '{}' não encontrada", nome);
             ResponseBuilder builder = Response.status(Status.NOT_FOUND);
-            builder.entity("{ \"error\": \"Entidade não encontrada\" }");
             throw new WebApplicationException(builder.build());
         }
+        logger.debug("{} pessoas encontradas", pessoas.size());
         return pessoas;
     }
     

@@ -66,6 +66,11 @@ descompactar resteasy-jboss-modules-3.0.9.Final.zip no diretório modules/system
 
 Maiores informações em http://docs.jboss.org/resteasy/docs/3.0.9.Final/userguide/html/Installation_Configuration.html#upgrading-eap61
 
+#### Log4j 2 ####
+
+Serão necessários 3 módulos, a seguir:
+
+
 ### Configuração do domain ###
 
 #### Configurando um security domain para não colocar senhas em plain text dentro de arquivos de configuração ####
