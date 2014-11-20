@@ -66,13 +66,17 @@ descompactar resteasy-jboss-modules-3.0.9.Final.zip no diretório modules/system
 
 Maiores informações em http://docs.jboss.org/resteasy/docs/3.0.9.Final/userguide/html/Installation_Configuration.html#upgrading-eap61
 
+#### Log4j 2 ####
+
+Serão necessários 3 módulos, a seguir:
+
+
 ### Configuração do domain ###
 
 #### Configurando um security domain para não colocar senhas em plain text dentro de arquivos de configuração ####
 
 A configuração de um security domain picketbox permite que uma senha criptografada seja utilizada dentro do domain.xml
-quando necessário, em vez da senha plain text. Nesta prova de conceito não será necessária esta configuração, mas para
-uma aplicação real é a forma recomendada.
+quando necessário, em vez da senha plain text.
 
 Para gerar a senha criptografada, execute:
 
@@ -94,22 +98,30 @@ em cada profile (default, ha, full, full-ha, etc.), e dentro da tag
 
     <security-domains>
 
-acrescente o seguinte domain:
+acrescente o domain descrito mais abaixo:
 
-    <security-domain name="encrypted-ds" cache-type="default">
+    <security-domain name="encrypted-javaee6poc-ds" cache-type="default">
         <authentication>
             <login-module code="org.picketbox.datasource.security.SecureIdentityLoginModule" flag="required">
                 <module-option name="password" value="senha-criptografada"/>
-                <module-option name="managedConnectionFactoryName" value="jboss.jca:service=LocalTxCM,name=oracle2"/>
-                <module-option name="username" value="login-do-usuario"/>
+                <module-option name="managedConnectionFactoryName" value="jboss.jca:service=LocalTxCM,name=javaee6pocds"/>
+                <module-option name="username" value="javaee6poc"/>
             </login-module>
         </authentication>
     </security-domain>
 
-No datasource da aplicação, a tag security deve ser configurada da forma abaixo
+Na configuração acima, lembrar de adequar ao seu ambiente, substituindo:
+
+* "senha-criptografada" em password para a senha gerada pelo comando anterior
+* a substring javaee6pocds em "managedConnectionFactoryName" para o nome do datasource da aplicação
+* o nome do security domain de "encrypted-javaee6poc-ds" para um mais adquado à aplicação
+
+No datasource da aplicação, a tag security deve ser configurada da forma abaixo,
+lembrando de substituir encrypted-javaee6poc-ds pelo nome do security domain usado
+acima:
 
     <security>
-        <security-domain>encrypted-ds</security-domain>
+        <security-domain>encrypted-javaee6poc-ds</security-domain>
     </security>
 
 ### Configuração do serviço JBoss ###
