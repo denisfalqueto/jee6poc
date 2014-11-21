@@ -6,22 +6,29 @@
             xml:lang="pt-BR"><![CDATA[Restful Services da POC JEE 6]]></doc><grammars><include
         href="schema.xsd"/></grammars><resources
             base="http://localhost:8080/jee6poc"><resource
-                path="/pessoas"><method id="getPessoas"
-                        name="GET"><request><param name="nome"
-                        style="query" type="xs:string"
-                        xmlns:xs="http://www.w3.org/2001/XMLSchema"/><param
-                        name="telefone" style="query" type="xs:string"
-                        xmlns:xs="http://www.w3.org/2001/XMLSchema"/></request><response><representation
-                mediaType="application/json; charset=UTF-8"/></response></method><method
-                id="add" name="POST"><request><representation
+                path="/pessoas"><method id="add"
+                        name="POST"><request><representation
                         mediaType="application/json; charset=UTF-8"/></request><response><representation
                 mediaType="application/json; charset=UTF-8"/></response></method><method
                 id="update" name="PUT"><request><representation
                         mediaType="application/json; charset=UTF-8"/></request><response><representation
+                mediaType="application/json; charset=UTF-8"/></response></method><method
+                id="getPessoas" name="GET"><request><param name="nome"
+                        style="query" type="xs:string"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"/><param
+                        name="telefone" style="query" type="xs:string"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"/></request><response><representation
                 mediaType="application/json; charset=UTF-8"/></response></method><resource
                     path="/{id: \d+}"><param name="id" style="template"
                     type="xs:long"
                     xmlns:xs="http://www.w3.org/2001/XMLSchema"/><method
-                    id="getPessoa" name="GET"><response><representation
+                    id="delete" name="DELETE"><response><representation
                     mediaType="application/json; charset=UTF-8"/></response></method><method
-                    id="delete" name="DELETE"><response><representation mediaType="application/json; charset=UTF-8"/></response></method></resource></resource></resources></application>
+                    id="getPessoa" name="GET"><response><representation
+            mediaType="application/json; charset=UTF-8"/></response></method></resource></resource><resource
+                path="/info"><resource
+                    path="/{p: (Application-(Id|Version)|Commit-Id)}"><param
+                    name="p" style="template" type="xs:string"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"/><method
+                    id="getProperty"
+                            name="GET"><response><representation mediaType="application/json; charset=UTF-8"/></response></method></resource></resource></resources></application>
