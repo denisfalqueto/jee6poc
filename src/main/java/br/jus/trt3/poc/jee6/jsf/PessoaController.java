@@ -1,10 +1,10 @@
 package br.jus.trt3.poc.jee6.jsf;
 
+import br.jus.trt3.poc.jee6.PessoaEJB;
 import br.jus.trt3.poc.jee6.entity.Pessoa;
 import br.jus.trt3.poc.jee6.entity.Telefone;
 import br.jus.trt3.poc.jee6.jsf.util.JsfUtil;
 import br.jus.trt3.poc.jee6.jsf.util.JsfUtil.PersistAction;
-import br.jus.trt3.poc.jee6.repository.PessoaRepository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,8 +18,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jboss.logging.Logger;
 
 @ManagedBean(name = "pessoaController")
@@ -27,11 +25,9 @@ import org.jboss.logging.Logger;
 public class PessoaController implements Serializable {
 
     @Inject
-    private PessoaRepository pessoaRepository;
+    private PessoaEJB ejb;
     @Inject
-    private EntityManager entityManager;
-    @Inject
-    private static Logger log;
+    private Logger log;
     private List<Pessoa> items = null;
     private Pessoa selected;
     private String filtroNome;
@@ -82,10 +78,6 @@ public class PessoaController implements Serializable {
         this.filtroTelefone = filtroTelefone;
     }
 
-    private PessoaRepository getRepository() {
-        return pessoaRepository;
-    }
-
     public Pessoa prepareCreate() {
         selected = new Pessoa();
         return selected;
@@ -112,23 +104,19 @@ public class PessoaController implements Serializable {
 
     public List<Pessoa> getItems() {
         if (items == null) {
-            items = getRepository().findByNomeETelefone(filtroNome, filtroTelefone);
+            items = ejb.findByNameETelefone(filtroNome, filtroTelefone);
         }
         return items;
     }
 
-    @Transactional
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getRepository().save(selected);
+                    ejb.save(selected);
                 } else {
-                    entityManager.remove(entityManager.merge(selected));
+                    ejb.mergeAndRemove(selected);
                 }
-                items = getRepository().findByNomeETelefone(filtroNome, filtroTelefone);
-                FacesContext ctxt = FacesContext.getCurrentInstance();
-                ctxt.getPartialViewContext().getRenderIds().add("PessoaListForm");
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";
@@ -142,18 +130,19 @@ public class PessoaController implements Serializable {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
             } catch (Exception ex) {
-                log.error(null, ex);
+                log.error(ex);
+                log.error("Causa", ex.getCause());
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
     }
 
     public List<Pessoa> getItemsAvailableSelectMany() {
-        return getRepository().findAll();
+        return ejb.findAll();
     }
 
     public List<Pessoa> getItemsAvailableSelectOne() {
-        return getRepository().findAll();
+        return ejb.findAll();
     }
 
     public Pessoa.Sexo[] getSexos() {
@@ -174,6 +163,8 @@ public class PessoaController implements Serializable {
 
     @FacesConverter(forClass = Pessoa.class)
     public static class PessoaControllerConverter implements Converter {
+        
+        private Logger log = Logger.getLogger(PessoaControllerConverter.class);
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -182,7 +173,7 @@ public class PessoaController implements Serializable {
             }
             PessoaController controller = (PessoaController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "pessoaController");
-            return controller.getRepository().findBy(getKey(value));
+            return controller.ejb.findBy(getKey(value));
         }
 
         java.lang.Long getKey(String value) {
