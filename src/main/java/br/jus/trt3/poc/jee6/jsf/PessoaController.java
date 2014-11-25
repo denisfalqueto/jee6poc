@@ -104,7 +104,7 @@ public class PessoaController implements Serializable {
 
     public List<Pessoa> getItems() {
         if (items == null) {
-            items = pessoaFacade.findByNomeETelefone(filtroNome, filtroNome);
+            items = pessoaFacade.findByNomeETelefone(filtroNome, filtroTelefone);
         }
         return items;
     }

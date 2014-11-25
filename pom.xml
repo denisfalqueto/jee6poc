@@ -34,6 +34,7 @@
         <server.profile>full</server.profile>  
         <ambiente>Development</ambiente>
         <buildNumber.checkChanges>false</buildNumber.checkChanges>
+        <buildNumber.doUpdate>false</buildNumber.doUpdate>
     </properties>
     
     <dependencyManagement>
@@ -388,7 +389,7 @@
                 </executions>
                 <configuration>
                     <doCheck>${buildNumber.checkChanges}</doCheck>
-                    <doUpdate>true</doUpdate>
+                    <doUpdate>${buildNumber.doUpdate}</doUpdate>
                     <shortRevisionLength>12</shortRevisionLength>
                 </configuration>
             </plugin>

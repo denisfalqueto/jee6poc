@@ -31,4 +31,11 @@
                     xmlns:xs="http://www.w3.org/2001/XMLSchema"/><method
                     id="getPessoa" name="GET"><response><representation
                     mediaType="application/json; charset=UTF-8"/></response></method><method
-                    id="delete" name="DELETE"><response><representation mediaType="application/json; charset=UTF-8"/></response></method></resource></resource></resources></application>
+                    id="delete" name="DELETE"><response><representation
+            mediaType="application/json; charset=UTF-8"/></response></method></resource></resource><resource
+                path="/info"><resource
+                    path="/{p: (Application-(Id|Version)|Commit-Id)}"><param
+                    name="p" style="template" type="xs:string"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"/><method
+                    id="getProperty"
+                            name="GET"><response><representation mediaType="application/json; charset=UTF-8"/></response></method></resource></resource></resources></application>
