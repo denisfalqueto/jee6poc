@@ -1,10 +1,10 @@
 package br.jus.trt3.poc.jee6.jsf;
 
+import br.jus.trt3.poc.jee6.ejb.PessoaFacade;
 import br.jus.trt3.poc.jee6.entity.Pessoa;
 import br.jus.trt3.poc.jee6.entity.Telefone;
 import br.jus.trt3.poc.jee6.jsf.util.JsfUtil;
 import br.jus.trt3.poc.jee6.jsf.util.JsfUtil.PersistAction;
-import br.jus.trt3.poc.jee6.repository.PessoaRepository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,11 +27,11 @@ import org.jboss.logging.Logger;
 public class PessoaController implements Serializable {
 
     @Inject
-    private PessoaRepository pessoaRepository;
+    private PessoaFacade pessoaFacade;
     @Inject
     private EntityManager entityManager;
     @Inject
-    private static Logger log;
+    private Logger log;
     private List<Pessoa> items = null;
     private Pessoa selected;
     private String filtroNome;
@@ -82,10 +82,6 @@ public class PessoaController implements Serializable {
         this.filtroTelefone = filtroTelefone;
     }
 
-    private PessoaRepository getRepository() {
-        return pessoaRepository;
-    }
-
     public Pessoa prepareCreate() {
         selected = new Pessoa();
         return selected;
@@ -112,7 +108,7 @@ public class PessoaController implements Serializable {
 
     public List<Pessoa> getItems() {
         if (items == null) {
-            items = getRepository().findByNomeETelefone(filtroNome, filtroTelefone);
+            items = pessoaFacade.findByNomeETelefone(filtroNome, filtroTelefone);
         }
         return items;
     }
@@ -122,13 +118,10 @@ public class PessoaController implements Serializable {
         if (selected != null) {
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getRepository().save(selected);
+                    pessoaFacade.save(selected);
                 } else {
-                    entityManager.remove(entityManager.merge(selected));
+                    pessoaFacade.mergeAndRemove(selected);
                 }
-                items = getRepository().findByNomeETelefone(filtroNome, filtroTelefone);
-                FacesContext ctxt = FacesContext.getCurrentInstance();
-                ctxt.getPartialViewContext().getRenderIds().add("PessoaListForm");
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";
@@ -149,11 +142,11 @@ public class PessoaController implements Serializable {
     }
 
     public List<Pessoa> getItemsAvailableSelectMany() {
-        return getRepository().findAll();
+        return pessoaFacade.findAll();
     }
 
     public List<Pessoa> getItemsAvailableSelectOne() {
-        return getRepository().findAll();
+        return pessoaFacade.findAll();
     }
 
     public Pessoa.Sexo[] getSexos() {
@@ -174,6 +167,8 @@ public class PessoaController implements Serializable {
 
     @FacesConverter(forClass = Pessoa.class)
     public static class PessoaControllerConverter implements Converter {
+        
+        private Logger log = Logger.getLogger(PessoaControllerConverter.class);
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -182,7 +177,7 @@ public class PessoaController implements Serializable {
             }
             PessoaController controller = (PessoaController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "pessoaController");
-            return controller.getRepository().findBy(getKey(value));
+            return controller.pessoaFacade.findBy(getKey(value));
         }
 
         java.lang.Long getKey(String value) {

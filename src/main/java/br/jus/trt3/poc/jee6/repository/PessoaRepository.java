@@ -7,6 +7,7 @@ import br.jus.trt3.poc.jee6.entity.Telefone_;
 import java.util.List;
 import javax.inject.Inject;
 import org.apache.deltaspike.data.api.AbstractEntityRepository;
+import org.apache.deltaspike.data.api.EntityManagerDelegate;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
@@ -18,7 +19,8 @@ import org.jboss.logging.Logger;
  * @author denisf
  */
 @Repository(forEntity = Pessoa.class)
-public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, Long> implements CriteriaSupport<Pessoa> {
+public abstract class PessoaRepository extends AbstractEntityRepository<Pessoa, Long> implements CriteriaSupport<Pessoa>,
+        EntityManagerDelegate<Pessoa> {
 
     @Inject
     private Logger log;
