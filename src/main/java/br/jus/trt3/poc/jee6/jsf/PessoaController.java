@@ -1,6 +1,6 @@
 package br.jus.trt3.poc.jee6.jsf;
 
-import br.jus.trt3.poc.jee6.PessoaEJB;
+import br.jus.trt3.poc.jee6.ejb.PessoaFacade;
 import br.jus.trt3.poc.jee6.entity.Pessoa;
 import br.jus.trt3.poc.jee6.entity.Telefone;
 import br.jus.trt3.poc.jee6.jsf.util.JsfUtil;
@@ -25,7 +25,7 @@ import org.jboss.logging.Logger;
 public class PessoaController implements Serializable {
 
     @Inject
-    private PessoaEJB ejb;
+    private PessoaFacade pessoaFacade;
     @Inject
     private Logger log;
     private List<Pessoa> items = null;
@@ -104,7 +104,7 @@ public class PessoaController implements Serializable {
 
     public List<Pessoa> getItems() {
         if (items == null) {
-            items = ejb.findByNameETelefone(filtroNome, filtroTelefone);
+            items = pessoaFacade.findByNomeETelefone(filtroNome, filtroNome);
         }
         return items;
     }
@@ -113,9 +113,9 @@ public class PessoaController implements Serializable {
         if (selected != null) {
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    ejb.save(selected);
+                    pessoaFacade.save(selected);
                 } else {
-                    ejb.mergeAndRemove(selected);
+                    pessoaFacade.mergeAndRemove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
@@ -138,11 +138,11 @@ public class PessoaController implements Serializable {
     }
 
     public List<Pessoa> getItemsAvailableSelectMany() {
-        return ejb.findAll();
+        return pessoaFacade.findAll();
     }
 
     public List<Pessoa> getItemsAvailableSelectOne() {
-        return ejb.findAll();
+        return pessoaFacade.findAll();
     }
 
     public Pessoa.Sexo[] getSexos() {
@@ -173,7 +173,7 @@ public class PessoaController implements Serializable {
             }
             PessoaController controller = (PessoaController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "pessoaController");
-            return controller.ejb.findBy(getKey(value));
+            return controller.pessoaFacade.findBy(getKey(value));
         }
 
         java.lang.Long getKey(String value) {

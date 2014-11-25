@@ -1,4 +1,4 @@
-package br.jus.trt3.poc.jee6;
+package br.jus.trt3.poc.jee6.ejb;
 
 import br.jus.trt3.poc.jee6.entity.Pessoa;
 import br.jus.trt3.poc.jee6.repository.PessoaRepository;
@@ -11,7 +11,7 @@ import javax.inject.Inject;
  * @author denisf
  */
 @Stateless
-public class PessoaEJB {
+public class PessoaFacade {
     
     @Inject
     private PessoaRepository pessoaRepository;
@@ -27,7 +27,7 @@ public class PessoaEJB {
         pessoaRepository.remove(p);
     }
     
-    public List<Pessoa> findByNameETelefone(String filtroNome, String filtroTelefone) {
+    public List<Pessoa> findByNomeETelefone(String filtroNome, String filtroTelefone) {
         return pessoaRepository.findByNomeETelefone(filtroNome, filtroTelefone);
     }
     
