@@ -8,6 +8,10 @@
             <module name="org.codehaus.jackson.jackson-jaxrs"/>
             <module name="org.codehaus.jackson.jackson-core-asl"/>
             <module name="org.apache.log4j"/>
+            <module name="org.slf4j"/>
+            <module name="org.slf4j.impl"/>
+            <module name="org.slf4j.ext"/>
+            <module name="org.apache.commons.logging"/>
         </exclusions>
         <dependencies>
             <module name="org.jboss.resteasy.resteasy-jackson2-provider" services="import"/>
